@@ -4,12 +4,7 @@ Static Astro site for *The Tarnished Codex*, a Phase 1 Elden Ring progression gu
 
 ## Commands
 
-- `npm run dev` - local preview
-- `npm test` - Vitest (`src/**/*.test.ts`)
-- `npm run check` - `astro check` (TypeScript and Astro)
-- `npm run build` - production static build into `dist/`
-
-Node 22.12+ is required (`package.json` `engines`).
+See `README.md` for local development commands and Node requirements.
 
 ## Layout
 

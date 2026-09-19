@@ -27,20 +27,20 @@ export function memoryStorage(initial: Record<string, string> = {}): StorageLike
   };
 }
 
-export function loadChecklist(key: string, storage?: StorageLike): ChecklistState {
-  if (!canUseStorage(storage)) return {};
+export function loadChecklist(key: string, storage?: StorageLike, fallback: ChecklistState = {}): ChecklistState {
+  if (!canUseStorage(storage)) return fallback;
   try {
     const raw = storage.getItem(key);
-    if (!raw) return {};
+    if (!raw) return fallback;
     const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return fallback;
     const state: ChecklistState = {};
     for (const [id, value] of Object.entries(parsed as Record<string, unknown>)) {
       if (typeof value === "boolean") state[id] = value;
     }
     return state;
   } catch {
-    return {};
+    return fallback;
   }
 }
 
@@ -81,7 +81,7 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
     isPersisting: () => persisting,
     toggle(id) {
       if (persisting) {
-        state = loadChecklist(key, storage);
+        state = loadChecklist(key, storage, state);
       }
       state = toggleId(state, id);
       persisting = saveChecklist(key, state, storage);
@@ -89,7 +89,7 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
     },
     clear(ids) {
       if (persisting) {
-        state = loadChecklist(key, storage);
+        state = loadChecklist(key, storage, state);
       }
       state = clearIds(state, ids);
       persisting = saveChecklist(key, state, storage);

@@ -1,0 +1,10 @@
+
+> elden-ring-guide@0.1.0 preview
+> astro preview
+
+[preview] The output directory /Users/hsuan/.no-mistakes/worktrees/768706888e04/01M2XG1CCK9436B59KMPGGSGXY/dist/ does not exist. Did you run `astro build`?
+  Location:
+    /Users/hsuan/.no-mistakes/worktrees/768706888e04/01M2XG1CCK9436B59KMPGGSGXY/node_modules/astro/dist/core/preview/index.js:38:13
+  Stack trace:
+    at preview (file:///Users/hsuan/.no-mistakes/worktrees/768706888e04/01M2XG1CCK9436B59KMPGGSGXY/node_modules/astro/dist/core/preview/index.js:38:13)
+    at async runCommand (file:///Users/hsuan/.no-mistakes/worktrees/768706888e04/01M2XG1CCK9436B59KMPGGSGXY/node_modules/astro/dist/cli/index.js:197:22)
