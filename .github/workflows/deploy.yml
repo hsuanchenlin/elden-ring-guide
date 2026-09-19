@@ -3,7 +3,10 @@ name: Deploy to Cloudflare Workers
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+
+concurrency:
+  group: cloudflare-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -15,6 +18,8 @@ jobs:
           node-version: '22'
           cache: 'npm'
       - run: npm ci
+      - run: npm test
+      - run: npm run check
       - run: npm run build
       - name: Deploy to Cloudflare Workers
         run: npx wrangler deploy
