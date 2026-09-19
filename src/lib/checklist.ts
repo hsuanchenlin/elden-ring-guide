@@ -76,20 +76,20 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
   // Re-saving the freshly loaded state is idempotent and doubles as a
   // writability probe, so an unusable storage is flagged before the first toggle.
   let persisting = saveChecklist(key, state, storage);
-  const persist = () => {
-    persisting = saveChecklist(key, state, storage);
-    return state;
-  };
   return {
     getState: () => state,
     isPersisting: () => persisting,
     toggle(id) {
-      state = toggleId(state, id);
-      return persist();
+      const currentStorage = loadChecklist(key, storage);
+      state = toggleId({ ...state, ...currentStorage }, id);
+      persisting = saveChecklist(key, state, storage);
+      return state;
     },
     clear(ids) {
-      state = clearIds(state, ids);
-      return persist();
+      const currentStorage = loadChecklist(key, storage);
+      state = clearIds({ ...state, ...currentStorage }, ids);
+      persisting = saveChecklist(key, state, storage);
+      return state;
     },
   };
 }
