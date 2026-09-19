@@ -112,19 +112,19 @@ export const starterBuilds: StarterBuild[] = [
     keepsake: "Golden Seed, or the Crimson Amber Medallion. You have the least HP of any serious start.",
     leveling: [
       "Vigor to 20 before you bother with more Intelligence. Pebble already kills Limgrave.",
-      "Intelligence to 14 for Carian Slicer, then 18 (with 10 Strength) for the Meteorite Staff, 30 for the academy kit, 40 before Leyndell.",
+      "Intelligence to 18 for the Meteorite Staff, 30 for the academy kit, 40 before Leyndell.",
       "Mind to 20 once you have more than two useful spells. Flask allocation should lean Cerulean until vigor is safe.",
       "Do not ignore Endurance entirely; a medium roll in light armor still needs a few points.",
     ],
     earlyWeapons: [
       {
         name: "Meteorite Staff",
-        where: "Street of Sages Ruins, Caelid swamp (needs 18 Intelligence and 10 Strength). S Intelligence scaling, but it cannot be upgraded.",
+        where: "Street of Sages Ruins, Caelid swamp (needs 18 Intelligence). S Intelligence scaling, but it cannot be upgraded.",
       },
       { name: "Rock Sling", where: "Chest in the Street of Sages cellar. Gravity damage that breaks poise." },
       {
         name: "Carian Slicer",
-        where: "Bought from Sellen (Waypoint Ruins) or Miriel after handing over the Royal House Scroll (needs 14 Intelligence).",
+        where: "Bought from Sellen (Waypoint Ruins) or Miriel after handing over the Royal House Scroll.",
       },
       {
         name: "Spirit Calling Bell + Lone Wolf Ashes",
@@ -139,7 +139,7 @@ export const starterBuilds: StarterBuild[] = [
     pitfalls: [
       "The Tree Sentinel will still flatten you. Ride past.",
       "Never spend a full flask bar on damage while vigor is under 20. Dead mages deal no damage.",
-      "The Meteorite Staff cannot be upgraded, so heavily upgraded staves eventually pass it for general sorceries. Its gravity boost keeps it the best Rock Sling staff through Phase 1 and beyond: swap your main staff when an upgraded one outperforms it, but keep casting gravity spells from the Meteorite Staff.",
+      "The Meteorite Staff cannot be upgraded, so heavily upgraded staves eventually pass it for general sorceries. Its gravity boost keeps it useful for Rock Sling through Phase 1 and beyond: cast from your upgraded main staff while holding the Meteorite Staff in the off-hand for its passive gravity boost.",
     ],
   },
 ];
