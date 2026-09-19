@@ -81,8 +81,7 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
     isPersisting: () => persisting,
     toggle(id) {
       if (persisting) {
-        const currentStorage = loadChecklist(key, storage);
-        state = { ...state, ...currentStorage };
+        state = loadChecklist(key, storage);
       }
       state = toggleId(state, id);
       persisting = saveChecklist(key, state, storage);
@@ -90,8 +89,7 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
     },
     clear(ids) {
       if (persisting) {
-        const currentStorage = loadChecklist(key, storage);
-        state = { ...state, ...currentStorage };
+        state = loadChecklist(key, storage);
       }
       state = clearIds(state, ids);
       persisting = saveChecklist(key, state, storage);
