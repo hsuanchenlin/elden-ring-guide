@@ -3,10 +3,8 @@
   import {
     CHECKLIST_STORAGE_KEY,
     browserStorage,
-    clearChecks,
     countChecked,
-    loadChecklist,
-    toggleCheck,
+    createChecklistSession,
     type ChecklistState,
   } from "../lib/checklist";
 
@@ -33,22 +31,30 @@
 
   let state = $state<ChecklistState>({});
   let ready = $state(false);
+  let persisting = $state(true);
+  let session: ReturnType<typeof createChecklistSession> | undefined;
 
   const items = $derived(groups.flatMap((group) => group.items));
   const ids = $derived(items.map((item) => item.id));
   const collected = $derived(countChecked(ids, state));
 
   onMount(() => {
-    state = loadChecklist(storageKey, browserStorage());
+    session = createChecklistSession(storageKey, browserStorage());
+    state = session.getState();
+    persisting = session.isPersisting();
     ready = true;
   });
 
   function onToggle(id: string) {
-    state = toggleCheck(storageKey, id, browserStorage());
+    if (!session) return;
+    state = session.toggle(id);
+    persisting = session.isPersisting();
   }
 
   function onReset() {
-    state = clearChecks(storageKey, ids, browserStorage());
+    if (!session) return;
+    state = session.clear(ids);
+    persisting = session.isPersisting();
   }
 </script>
 
@@ -66,6 +72,12 @@
       Reset list
     </button>
   </div>
+
+  {#if ready && !persisting}
+    <p role="status" class="border border-rust/40 bg-rust/10 px-3 py-2 text-sm text-parchment">
+      Changes cannot be saved in this browser; your marks will reset when you leave.
+    </p>
+  {/if}
 
   <div class="h-1 w-full bg-obsidian-raised">
     <div

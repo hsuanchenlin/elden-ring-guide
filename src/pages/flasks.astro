@@ -2,12 +2,19 @@
 import Checklist from "../components/Checklist.svelte";
 import Panel from "../components/Panel.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { flaskPickups, pickupsByKind, seedThresholds } from "../data/flasks";
+import { flaskPickups, pickupQuantity, pickupsByKind, seedThresholds, totalQuantity } from "../data/flasks";
 import { zones } from "../data/zones";
 
 const seeds = pickupsByKind("golden-seed");
 const tears = pickupsByKind("sacred-tear");
 const zoneName = Object.fromEntries(zones.map((zone) => [zone.id, zone.name]));
+
+function pickupMeta(pickup: (typeof flaskPickups)[number]): string {
+  const parts = [zoneName[pickup.zone], pickup.location];
+  const quantity = pickupQuantity(pickup);
+  if (quantity > 1) parts.push(`${quantity} ${pickup.kind === "golden-seed" ? "seeds" : "tears"}`);
+  return parts.join(" · ");
+}
 
 const seedGroups = [
   {
@@ -17,7 +24,7 @@ const seedGroups = [
       title: pickup.name,
       detail: pickup.detail,
       optional: pickup.priority === "detour" || pickup.id === "seed-keepsake",
-      meta: `${zoneName[pickup.zone]} · ${pickup.location}`,
+      meta: pickupMeta(pickup),
     })),
   },
 ];
@@ -30,7 +37,7 @@ const tearGroups = [
       title: pickup.name,
       detail: pickup.detail,
       optional: pickup.priority === "detour",
-      meta: `${zoneName[pickup.zone]} · ${pickup.location}`,
+      meta: pickupMeta(pickup),
     })),
   },
 ];
@@ -64,7 +71,9 @@ const tearGroups = [
       <Panel class="flex h-full flex-col p-5">
         <p class="rune-title text-[10px] text-gold">Listed here</p>
         <p class="mt-2 text-2xl text-gold-bright">{flaskPickups.length} pickups</p>
-        <p class="mt-2 text-sm text-parchment-muted">{seeds.length} seeds · {tears.length} tears through Leyndell.</p>
+        <p class="mt-2 text-sm text-parchment-muted">
+          {totalQuantity(seeds)} seeds at {seeds.length} locations · {tears.length} tears through Leyndell.
+        </p>
       </Panel>
     </div>
 

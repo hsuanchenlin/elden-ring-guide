@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { flaskChargesFromSeeds, flaskPickups, seedsToNextCharge } from "../data/flasks";
+import { flaskChargesFromSeeds, flaskPickups, pickupsByKind, seedsToNextCharge, totalQuantity } from "../data/flasks";
 import { allLandmarks, zones } from "../data/zones";
 import { starterBuilds } from "../data/builds";
 
@@ -29,6 +29,23 @@ describe("flask charge table", () => {
 });
 
 describe("phase 1 catalogue", () => {
+  it("counts multi-seed locations separately from pickup locations", () => {
+    const phantomTree = flaskPickups.find((pickup) => pickup.id === "seed-phantom-tree");
+    expect(phantomTree?.name).toBe("Outer Wall Phantom Tree");
+    expect(phantomTree?.quantity).toBe(2);
+  });
+
+  it("totals 18 golden seeds across 17 pickup locations", () => {
+    const seeds = pickupsByKind("golden-seed");
+    expect(seeds).toHaveLength(17);
+    expect(totalQuantity(seeds)).toBe(18);
+  });
+
+  it("totals one tear per church", () => {
+    const tears = pickupsByKind("sacred-tear");
+    expect(totalQuantity(tears)).toBe(tears.length);
+  });
+
   it("covers the five route zones in captain order", () => {
     expect(zones.map((zone) => zone.id)).toEqual([
       "limgrave",

@@ -14,11 +14,11 @@ export const zones: Zone[] = [
     summary:
       "Learn the grammar of the Lands Between here: Sites of Grace, Torrent, the Roundtable, and the difference between a fair fight and a wall. Limgrave includes the Weeping Peninsula detour and Stormveil Castle.",
     approach:
-      "Do not duel the Tree Sentinel at the Church of Elleh. Ride past, take the Gatefront map and Whetstone Knife, meet Melina for Torrent, then loop the Weeping Peninsula for flasks and a Claymore before you knock on Stormveil.",
+      "Do not duel the Tree Sentinel at the Church of Elleh. Ride past, take the Gatefront map stela and Whetstone Knife, meet Melina for Torrent, then loop the Weeping Peninsula for flasks and a Claymore before you knock on Stormveil.",
     bosses: [
       {
         name: "Margit, the Fell Omen",
-        note: "Stormveil gate. Use the spirit summoning bell from the Church of Elleh merchant after Torrent, and consider Margit's Shackle from Patches.",
+        note: "Stormveil gate. Bring the Spirit Calling Bell: Renna gives it at the Church of Elleh at night once you have Torrent, and the Twin Maiden Husks at the Roundtable sell it if you missed her. Margit's Shackle from Patches tames the first phase.",
       },
       {
         name: "Godrick the Grafted",
@@ -36,7 +36,7 @@ export const zones: Zone[] = [
         id: "lm-gatefront",
         title: "Gatefront Ruins kit",
         detail:
-          "Pick up the Limgrave East and West maps, the Whetstone Knife, and the Lordsworn's Greatsword in the chest among the wagons.",
+          "Grab the Map: Limgrave, West stela by the road through the ruins, the Whetstone Knife from the chest in the ruins' cellar, and the Lordsworn's Greatsword from the wagon chest. The Map: Limgrave, East stela stands in Mistwood, south of the Third Church of Marika.",
       },
       {
         id: "lm-roundtable",
@@ -54,7 +54,7 @@ export const zones: Zone[] = [
         id: "lm-darriwil",
         title: "Forlorn Hound Evergaol",
         detail:
-          "Optional. Bloodhound Knight Darriwil drops Bloodhound's Fang, a somber curved greatsword that carries every starter into mid-game.",
+          "Optional. Bloodhound Knight Darriwil drops Bloodhound's Fang, a somber curved greatsword (needs 18 Strength and 17 Dexterity) that carries every starter into mid-game.",
         optional: true,
       },
       {
@@ -88,7 +88,7 @@ export const zones: Zone[] = [
     summary:
       "A wide, wet basin under Raya Lucaria. Sorcerers, crabs, and the first Great Rune that lets you respec. Liurnia is where flask potency and a real weapon affinity come online.",
     approach:
-      "Exit Stormveil onto the Lake-Facing Cliffs, take the Church of Irith tear immediately, then hug the eastern land route to the Academy Gate Town. The Glintstone Key is on the fallen dragon north of the gate town. Caria Manor can wait until you are comfortable in the academy.",
+      "Exit Stormveil onto the Lake-Facing Cliffs, take the Church of Irith tear immediately, then hug the eastern land route to the Academy Gate Town. The Academy Glintstone Key rests on a corpse behind the sleeping Glintstone Dragon Smarag, west of the gate town. Caria Manor can wait until you are comfortable in the academy.",
     bosses: [
       {
         name: "Red Wolf of Radagon",
@@ -109,13 +109,13 @@ export const zones: Zone[] = [
         id: "lm-sellen",
         title: "Meet Sorceress Sellen",
         detail:
-          "Waypoint Ruins cellar in Limgrave if you missed her, then her academy projection. Glintstone Pebble upgrades and Rock Sling start here.",
+          "Waypoint Ruins cellar in Limgrave if you missed her, then her academy projection. She stocks the early glintstone staples and sells Carian Slicer once you hand over the Royal House Scroll; Rock Sling is looted from Caelid's Street of Sages, not bought.",
       },
       {
         id: "lm-glintstone-key",
         title: "Academy Glintstone Key",
         detail:
-          "On the sleeping dragon (Glintstone Dragon Smarag) island northwest of Academy Gate Town. You can grab the key without committing to the dragon.",
+          "Behind Glintstone Dragon Smarag, on the island west of Academy Gate Town. The key lies on a dead sorcerer among the crystals at the dragon's back; you can grab it without waking the fight.",
       },
       {
         id: "lm-rennala",
@@ -159,7 +159,7 @@ export const zones: Zone[] = [
     bosses: [
       {
         name: "Starscourge Radahn",
-        note: "Redmane Festival after you speak to Blaidd, Alexander, or the castle announcer. Summon every NPC in the fight; this is the game's intended spectacle.",
+        note: "Redmane Festival triggers once you reach the Altus Plateau or follow Blaidd's questline to the castle; speak to Jerren, the castle announcer, to begin. Summon every NPC in the fight; this is the game's intended spectacle.",
       },
     ],
     landmarks: [
@@ -191,12 +191,12 @@ export const zones: Zone[] = [
         id: "lm-meteorite",
         title: "Street of Sages Meteorite Staff",
         detail:
-          "Optional but transformative for Astrologers. Street of Sages Ruins in the swamp. Rock Sling is in a nearby chest.",
+          "Optional but transformative for Astrologers. Street of Sages Ruins in the swamp. Rock Sling is in a nearby cellar chest.",
         optional: true,
       },
     ],
     warnings: [
-      "Dragonbarrow's open world, the Bestial Sanctum teleport chest, and Greyoll's dragon cluster are not south-Caelid difficulty.",
+      "Dragonbarrow's open world, the Bestial Sanctum waygate north of the Third Church of Marika, and Greyoll's dragon cluster are not south-Caelid difficulty.",
       "Scarlet rot builds; keep Preserving Boluses or a torch for dogs that grab.",
     ],
     accent: "#8c3b32",
@@ -271,15 +271,15 @@ export const zones: Zone[] = [
     summary:
       "Phase 1's last city. Once you have two Great Runes, the Erdtree gate will have you. Learn the ramparts, the inner tree, and Morgott; the rest of the game opens after his fall.",
     approach:
-      "From the Outer Wall battleground, beat or bypass the Draconic Tree Sentinel, rest at the Capital Rampart, then follow the avenue to the East Capital Rampart grace. Godfrey's golden shade is the mid-dungeon check; Morgott waits at the Erdtree sanctuary.",
+      "From the Outer Wall battleground, beat or bypass the Draconic Tree Sentinel, rest at the Capital Rampart, then follow the avenue to the East Capital Rampart grace. Godfrey's golden shade holds the Erdtree Sanctuary; Morgott waits at the Elden Throne at the foot of the Erdtree.",
     bosses: [
       {
         name: "Godfrey, First Elden Lord (Golden Shade)",
-        note: "A stance-break tutorial in kingly clothes. Jump the stomp, punish the recovery.",
+        note: "Fought at the Erdtree Sanctuary. A stance-break tutorial in kingly clothes. Jump the stomp, punish the recovery.",
       },
       {
         name: "Morgott, the Omen King",
-        note: "True final of Phase 1. Holy damage, delayed slams, and a dagger phase. A +18 / somber +7 weapon and 40 vigor make this a fight instead of a wall.",
+        note: "True final of Phase 1, at the Elden Throne. Holy damage, delayed slams, and a dagger phase. A +18 / somber +7 weapon and 40 vigor make this a fight instead of a wall.",
       },
     ],
     landmarks: [
@@ -292,7 +292,7 @@ export const zones: Zone[] = [
       {
         id: "lm-godfrey-shade",
         title: "Defeat Godfrey's shade",
-        detail: "Unlocks the inner capital and the path toward the Erdtree sanctuary.",
+        detail: "Unlocks the great branch up to the Queen's Bedchamber and the Elden Throne.",
       },
       {
         id: "lm-bolts",

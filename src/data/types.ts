@@ -35,6 +35,8 @@ export interface FlaskPickup {
   location: string;
   detail: string;
   priority: "first-hours" | "on-route" | "detour";
+  /** How many seeds/tears this location yields; 1 when omitted. */
+  quantity?: number;
 }
 
 export interface StarterBuild {

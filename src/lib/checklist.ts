@@ -44,23 +44,54 @@ export function loadChecklist(key: string, storage?: StorageLike): ChecklistStat
   }
 }
 
-export function saveChecklist(key: string, state: ChecklistState, storage?: StorageLike): void {
-  if (!canUseStorage(storage)) return;
-  storage.setItem(key, JSON.stringify(state));
+export function saveChecklist(key: string, state: ChecklistState, storage?: StorageLike): boolean {
+  if (!canUseStorage(storage)) return false;
+  try {
+    storage.setItem(key, JSON.stringify(state));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-export function toggleCheck(key: string, id: string, storage?: StorageLike): ChecklistState {
-  const state = loadChecklist(key, storage);
-  const next = { ...state, [id]: !state[id] };
-  saveChecklist(key, next, storage);
+export function toggleId(state: ChecklistState, id: string): ChecklistState {
+  return { ...state, [id]: !state[id] };
+}
+
+export function clearIds(state: ChecklistState, ids: readonly string[]): ChecklistState {
+  const next = { ...state };
+  for (const id of ids) delete next[id];
   return next;
 }
 
-export function clearChecks(key: string, ids: readonly string[], storage?: StorageLike): ChecklistState {
-  const state = { ...loadChecklist(key, storage) };
-  for (const id of ids) delete state[id];
-  saveChecklist(key, state, storage);
-  return state;
+export interface ChecklistSession {
+  getState(): ChecklistState;
+  isPersisting(): boolean;
+  toggle(id: string): ChecklistState;
+  clear(ids: readonly string[]): ChecklistState;
+}
+
+export function createChecklistSession(key: string, storage?: StorageLike): ChecklistSession {
+  let state = loadChecklist(key, storage);
+  // Re-saving the freshly loaded state is idempotent and doubles as a
+  // writability probe, so an unusable storage is flagged before the first toggle.
+  let persisting = saveChecklist(key, state, storage);
+  const persist = () => {
+    persisting = saveChecklist(key, state, storage);
+    return state;
+  };
+  return {
+    getState: () => state,
+    isPersisting: () => persisting,
+    toggle(id) {
+      state = toggleId(state, id);
+      return persist();
+    },
+    clear(ids) {
+      state = clearIds(state, ids);
+      return persist();
+    },
+  };
 }
 
 export function countChecked(ids: readonly string[], state: ChecklistState): number {

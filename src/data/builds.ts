@@ -32,7 +32,10 @@ export const starterBuilds: StarterBuild[] = [
     ],
     earlyWeapons: [
       { name: "Lordsworn's Greatsword", where: "Chest in Gatefront Ruins wagons" },
-      { name: "Bloodhound's Fang", where: "Forlorn Hound Evergaol, south Limgrave (somber)" },
+      {
+        name: "Bloodhound's Fang",
+        where: "Forlorn Hound Evergaol, south Limgrave (somber; needs 18 Strength and 17 Dexterity)",
+      },
       { name: "Claymore", where: "Castle Morne, Weeping Peninsula" },
       { name: "Greatsword", where: "Carriage in north Caelid, on the Dragonbarrow border road" },
     ],
@@ -66,14 +69,17 @@ export const starterBuilds: StarterBuild[] = [
     keepsake: "Golden Seed. The Samurai already has a complete weapon.",
     leveling: [
       "Vigor to 20 immediately. You start squishier than the Vagabond.",
-      "Dexterity to 18 for Bloodhound's Fang, then 24 as katanas and curved swords come online.",
+      "Strength to 18 and Dexterity to 17 for Bloodhound's Fang, then Dexterity to 24 as katanas and curved swords come online.",
       "A few points of Arcane only if you move to Occult or Rivers of Blood later. Bleed works without it on the Uchi.",
       "Vigor 30 by Rennala, 40 by Radahn.",
     ],
     earlyWeapons: [
       { name: "Uchigatana", where: "Starting weapon. A second Uchi is in Deathtouched Catacombs, Limgrave." },
       { name: "Bloody Slash (Ash of War)", where: "Fort Haight, dropped by the knight on the rampart" },
-      { name: "Bloodhound's Fang", where: "Forlorn Hound Evergaol. Still one of the best bleed-adjacent arms." },
+      {
+        name: "Bloodhound's Fang",
+        where: "Forlorn Hound Evergaol (needs 18 Strength and 17 Dexterity). Still one of the best bleed-adjacent arms.",
+      },
       { name: "Reduvia", where: "Bloody Finger Nerijus invasion in Murkwater, Limgrave" },
     ],
     playstyle: [
@@ -106,15 +112,24 @@ export const starterBuilds: StarterBuild[] = [
     keepsake: "Golden Seed, or the Crimson Amber Medallion. You have the least HP of any serious start.",
     leveling: [
       "Vigor to 20 before you bother with more Intelligence. Pebble already kills Limgrave.",
-      "Intelligence to 18 for Carian Slicer, 30 for the academy kit, 40 before Leyndell.",
+      "Intelligence to 14 for Carian Slicer, then 18 (with 10 Strength) for the Meteorite Staff, 30 for the academy kit, 40 before Leyndell.",
       "Mind to 20 once you have more than two useful spells. Flask allocation should lean Cerulean until vigor is safe.",
       "Do not ignore Endurance entirely; a medium roll in light armor still needs a few points.",
     ],
     earlyWeapons: [
-      { name: "Meteorite Staff", where: "Street of Sages Ruins, Caelid swamp. S-scale in Intelligence, no upgrade path." },
+      {
+        name: "Meteorite Staff",
+        where: "Street of Sages Ruins, Caelid swamp (needs 18 Intelligence and 10 Strength). S Intelligence scaling, but it cannot be upgraded.",
+      },
       { name: "Rock Sling", where: "Chest in the Street of Sages cellar. Gravity damage that breaks poise." },
-      { name: "Carian Slicer", where: "Bought from Sellen (Waypoint Ruins) or Miriel after finding the scroll." },
-      { name: "Spirit Calling Bell + Lone Wolf Ashes", where: "Church of Elleh, from Renna / Ranni after Torrent" },
+      {
+        name: "Carian Slicer",
+        where: "Bought from Sellen (Waypoint Ruins) or Miriel after handing over the Royal House Scroll (needs 14 Intelligence).",
+      },
+      {
+        name: "Spirit Calling Bell + Lone Wolf Ashes",
+        where: "Church of Elleh at night, from Renna after Torrent; sold by the Twin Maiden Husks if you miss her.",
+      },
     ],
     playstyle: [
       "Summon wolves or a tankier ash, then Pebble from outside melee range. You are not a battle-mage until Carian Slicer.",
@@ -124,7 +139,7 @@ export const starterBuilds: StarterBuild[] = [
     pitfalls: [
       "The Tree Sentinel will still flatten you. Ride past.",
       "Never spend a full flask bar on damage while vigor is under 20. Dead mages deal no damage.",
-      "The Meteorite Staff stops scaling when other staves can be upgraded past it. Replace it around Altus with an Academy or Carian staff at +8 or better.",
+      "The Meteorite Staff cannot be upgraded, so heavily upgraded staves eventually pass it for general sorceries. Its gravity boost keeps it the best Rock Sling staff through Phase 1 and beyond: swap your main staff when an upgraded one outperforms it, but keep casting gravity spells from the Meteorite Staff.",
     ],
   },
 ];

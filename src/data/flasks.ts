@@ -140,11 +140,12 @@ export const flaskPickups: FlaskPickup[] = [
   {
     id: "seed-phantom-tree",
     kind: "golden-seed",
-    name: "Outer Wall Phantom Tree (x2)",
+    name: "Outer Wall Phantom Tree",
     zone: "altus",
     location: "Capital Outskirts, Outer Wall Phantom Tree grace",
     detail: "Two seeds under one phantom tree. The best flask spike before Leyndell.",
     priority: "on-route",
+    quantity: 2,
   },
   {
     id: "seed-leyndell-spirit",
@@ -162,7 +163,7 @@ export const flaskPickups: FlaskPickup[] = [
     zone: "limgrave",
     location: "East Limgrave, north of Mistwood",
     detail:
-      "First tear on most routes. Also a teleporter chest to the Bestial Sanctum; do not take the chest until you mean to visit Dragonbarrow.",
+      "First tear on most routes. A waygate hidden in the bushes north of the church sends you to the Bestial Sanctum in Dragonbarrow; do not take it until you mean to visit.",
     priority: "first-hours",
   },
   {
@@ -283,4 +284,12 @@ export function seedsToNextCharge(seeds: number): {
 
 export function pickupsByKind(kind: FlaskPickup["kind"]): FlaskPickup[] {
   return flaskPickups.filter((pickup) => pickup.kind === kind);
+}
+
+export function pickupQuantity(pickup: FlaskPickup): number {
+  return pickup.quantity ?? 1;
+}
+
+export function totalQuantity(pickups: readonly FlaskPickup[]): number {
+  return pickups.reduce((total, pickup) => total + pickupQuantity(pickup), 0);
 }

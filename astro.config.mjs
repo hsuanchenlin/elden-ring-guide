@@ -4,7 +4,7 @@ import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://hsuanchenlin.github.io/elden-ring-guide",
+  site: "https://tarnished-codex.workers.dev",
   integrations: [svelte()],
   vite: {
     plugins: [tailwindcss()],
