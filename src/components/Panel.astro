@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+  as?: keyof HTMLElementTagNameMap;
+}
+
+const { class: className, as: Tag = "section" } = Astro.props;
+---
+
+<Tag class:list={["panel relative border border-gold/20 bg-obsidian-panel/90", className]}>
+  <span class="pointer-events-none absolute -left-px -top-px h-2.5 w-2.5 border-l border-t border-gold"></span>
+  <span class="pointer-events-none absolute -right-px -top-px h-2.5 w-2.5 border-r border-t border-gold"></span>
+  <span class="pointer-events-none absolute -bottom-px -left-px h-2.5 w-2.5 border-b border-l border-gold"></span>
+  <span class="pointer-events-none absolute -bottom-px -right-px h-2.5 w-2.5 border-b border-r border-gold"></span>
+  <slot />
+</Tag>

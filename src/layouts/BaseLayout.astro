@@ -1,0 +1,44 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.svelte";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "A recommended Elden Ring progression route through Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell, with flask upgrades and starter builds.",
+} = Astro.props;
+const pageTitle = title.includes("Tarnished Codex") ? title : `${title} · Tarnished Codex`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="grain antialiased">
+    <a
+      href="#content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-obsidian-panel focus:px-3 focus:py-2 focus:text-gold"
+    >
+      Skip to content
+    </a>
+    <Header client:load currentPath={Astro.url.pathname} />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
