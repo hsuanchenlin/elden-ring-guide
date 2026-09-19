@@ -80,14 +80,20 @@ export function createChecklistSession(key: string, storage?: StorageLike): Chec
     getState: () => state,
     isPersisting: () => persisting,
     toggle(id) {
-      const currentStorage = loadChecklist(key, storage);
-      state = toggleId({ ...state, ...currentStorage }, id);
+      if (persisting) {
+        const currentStorage = loadChecklist(key, storage);
+        state = { ...state, ...currentStorage };
+      }
+      state = toggleId(state, id);
       persisting = saveChecklist(key, state, storage);
       return state;
     },
     clear(ids) {
-      const currentStorage = loadChecklist(key, storage);
-      state = clearIds({ ...state, ...currentStorage }, ids);
+      if (persisting) {
+        const currentStorage = loadChecklist(key, storage);
+        state = { ...state, ...currentStorage };
+      }
+      state = clearIds(state, ids);
       persisting = saveChecklist(key, state, storage);
       return state;
     },
