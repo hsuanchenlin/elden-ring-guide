@@ -1,0 +1,110 @@
+---
+import ErdtreeMark from "../components/ErdtreeMark.astro";
+import Panel from "../components/Panel.astro";
+import ProgressHud from "../components/ProgressHud.svelte";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { flaskPickups } from "../data/flasks";
+import { starterBuilds } from "../data/builds";
+import { allLandmarks, zones } from "../data/zones";
+
+const trackedIds = [...allLandmarks().map((item) => item.id), ...flaskPickups.map((item) => item.id)];
+---
+
+<BaseLayout title="The Tarnished Codex">
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 sm:pt-24">
+      <div class="flex flex-col items-center text-center">
+        <ErdtreeMark class="mb-6 h-20 w-20 text-gold" />
+        <p class="rune-title text-[11px] text-gold">A guide for the Lands Between</p>
+        <h1 class="rune-title mt-4 text-3xl text-gold-bright sm:text-5xl">The Tarnished Codex</h1>
+        <div class="gold-rule mx-auto mt-6 w-48"></div>
+        <p class="mt-6 max-w-2xl text-lg text-parchment-muted">
+          A recommended first path from Limgrave to Leyndell. Survive first, upgrade the flask, and finish one build
+          before you start another.
+        </p>
+        <ProgressHud client:load ids={trackedIds} />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-4 md:grid-cols-3">
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">01</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">Order without a prison</h2>
+        <p class="mt-3 text-parchment-muted">
+          The Lands Between will not tell you where to walk. This Codex does: a first-playthrough order that keeps you
+          alive long enough to learn the game. Detour whenever a church or cave pulls you off the road.
+        </p>
+      </Panel>
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">02</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">Survive first</h2>
+        <p class="mt-3 text-parchment-muted">
+          Golden Seeds and Sacred Tears outpace any weapon you are not ready to use. Vigor is a weapon. Many Tarnished
+          fall because they spent early runes on damage.
+        </p>
+      </Panel>
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">03</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">Build with intent</h2>
+        <p class="mt-3 text-parchment-muted">
+          One finished starter - Vagabond strength, Samurai bleed, or Astrologer sorcery - will carry you through the
+          capital. Three half-made builds will not.
+        </p>
+      </Panel>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="rune-title text-[11px] text-gold">Phase 1 route</p>
+        <h2 class="mt-2 font-display text-2xl text-parchment">Five zones to the Erdtree</h2>
+      </div>
+      <a href="/progression" class="rune-title text-[11px] text-gold hover:text-gold-bright">Open the route</a>
+    </div>
+    <ol class="grid gap-3 md:grid-cols-5">
+      {
+        zones.map((zone) => (
+          <li>
+            <a
+              href={`/progression#${zone.id}`}
+              class="panel relative flex h-full min-h-40 flex-col border border-gold/20 bg-obsidian-panel/90 p-4 transition-colors hover:border-gold"
+              style={`border-top: 2px solid ${zone.accent}`}
+            >
+              <p class="rune-title text-[10px] text-gold">{String(zone.order).padStart(2, "0")}</p>
+              <h3 class="mt-2 font-display text-lg text-parchment">{zone.shortName}</h3>
+              <p class="mt-auto pt-3 text-xs text-parchment-faint">{zone.levelRange}</p>
+              <p class="text-xs text-parchment-muted">{zone.weaponUpgrade}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="mx-auto mt-16 grid max-w-6xl gap-4 px-4 sm:px-6 md:grid-cols-2">
+    <Panel class="p-6">
+      <p class="rune-title text-[11px] text-gold">Survival</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">Flask upgrades</h2>
+      <p class="mt-3 text-parchment-muted">
+        Early Golden Seeds and Sacred Tears through Leyndell, as a checklist that remembers what you have already
+        pocketed.
+      </p>
+      <a href="/flasks" class="rune-title mt-4 inline-block text-[11px] text-gold hover:text-gold-bright">
+        Open the flask ledger
+      </a>
+    </Panel>
+    <Panel class="p-6">
+      <p class="rune-title text-[11px] text-gold">Archetypes</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">Starter builds</h2>
+      <ul class="mt-3 space-y-1 text-parchment-muted">
+        {starterBuilds.map((build) => <li>{build.className} - {build.archetype}</li>)}
+      </ul>
+      <a href="/builds" class="rune-title mt-4 inline-block text-[11px] text-gold hover:text-gold-bright">
+        Open the archetypes
+      </a>
+    </Panel>
+  </section>
+</BaseLayout>

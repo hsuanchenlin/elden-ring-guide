@@ -1,0 +1,35 @@
+---
+import { zones } from "../data/zones";
+
+interface Props {
+  current?: string;
+}
+
+const { current } = Astro.props;
+---
+
+<nav
+  class="sticky top-[57px] z-30 mb-10 overflow-x-auto border-y border-gold/15 bg-obsidian/90 px-4 backdrop-blur-md sm:px-6"
+  aria-label="Zone selector"
+>
+  <ol class="flex max-w-6xl min-w-max gap-2 py-3 sm:mx-auto">
+    {
+      zones.map((zone) => (
+        <li>
+          <a
+            href={`#${zone.id}`}
+            class:list={[
+              "rune-title inline-flex items-center gap-2 border px-3 py-2 text-[10px] transition-colors sm:text-[11px]",
+              current === zone.id
+                ? "border-gold bg-gold/15 text-gold-bright"
+                : "border-gold/25 text-parchment-muted hover:border-gold hover:text-gold",
+            ]}
+          >
+            <span class="text-gold">{String(zone.order).padStart(2, "0")}</span>
+            {zone.shortName}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>

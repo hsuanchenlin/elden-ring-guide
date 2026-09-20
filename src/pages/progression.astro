@@ -1,0 +1,120 @@
+---
+import Checklist from "../components/Checklist.svelte";
+import Panel from "../components/Panel.astro";
+import ZoneSelector from "../components/ZoneSelector.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { flaskPickups } from "../data/flasks";
+import { zones } from "../data/zones";
+
+const groups = zones.map((zone) => ({
+  heading: zone.name,
+  items: zone.landmarks.map((landmark) => ({
+    id: landmark.id,
+    title: landmark.title,
+    detail: landmark.detail,
+    optional: landmark.optional,
+  })),
+}));
+---
+
+<BaseLayout
+  title="Progression Route"
+  description="Recommended Elden Ring order from Limgrave through Liurnia, Caelid, Altus Plateau, and Leyndell, with level and weapon upgrade brackets."
+>
+  <div class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <p class="rune-title text-[11px] text-gold">Phase 1</p>
+    <h1 class="rune-title mt-3 text-3xl text-gold-bright sm:text-4xl">Progression Route</h1>
+    <p class="mt-4 max-w-3xl text-lg text-parchment-muted">
+      Five regions, in the order a first Tarnished should meet them. Level ranges assume a new character who explores
+      each zone rather than sprinting the critical path. Somber weapons sit roughly one third of the standard upgrade
+      number.
+    </p>
+  </div>
+
+  <ZoneSelector />
+
+  <div class="mx-auto max-w-6xl space-y-16 px-4 pb-8 sm:px-6">
+    {
+      zones.map((zone) => {
+        const flasksHere = flaskPickups.filter((pickup) => pickup.zone === zone.id);
+        return (
+          <article id={zone.id} class="scroll-mt-28">
+            <Panel class="p-6 sm:p-8">
+              <div>
+                <p class="rune-title text-[11px] text-gold" style={`color: ${zone.accent}`}>
+                  {String(zone.order).padStart(2, "0")} · {zone.epithet}
+                </p>
+                <h2 class="mt-2 font-display text-3xl text-parchment">{zone.name}</h2>
+                <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">Level</dt>
+                    <dd class="text-gold-bright">{zone.levelRange}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">Standard</dt>
+                    <dd class="text-gold-bright">{zone.weaponUpgrade}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">Somber</dt>
+                    <dd class="text-gold-bright">{zone.somberUpgrade}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">Vigor</dt>
+                    <dd class="text-gold-bright">{zone.vigorTarget}</dd>
+                  </div>
+                </dl>
+              </div>
+              <p class="mt-6 text-parchment-muted">{zone.summary}</p>
+              <h3 class="rune-title mt-8 text-xs text-gold">How to walk it</h3>
+              <p class="mt-2 text-parchment">{zone.approach}</p>
+              <h3 class="rune-title mt-8 text-xs text-gold">Shardbearers and walls</h3>
+              <ul class="mt-3 space-y-3">
+                {zone.bosses.map((boss) => (
+                  <li class="border-l border-gold/30 pl-3">
+                    <p class="text-parchment">{boss.name}</p>
+                    <p class="text-sm text-parchment-muted">{boss.note}</p>
+                  </li>
+                ))}
+              </ul>
+              {flasksHere.length > 0 && (
+                <>
+                  <h3 class="rune-title mt-8 text-xs text-gold">Flask pickups in this zone</h3>
+                  <ul class="mt-3 columns-1 gap-4 text-sm text-parchment-muted sm:columns-2">
+                    {flasksHere.map((pickup) => (
+                      <li class="mb-2">
+                        <a href="/flasks" class="text-gold hover:text-gold-bright">
+                          {pickup.name}
+                        </a>
+                        <span> · {pickup.location}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {zone.warnings.length > 0 && (
+                <div class="mt-8 border border-rust/40 bg-rust/10 p-4">
+                  <p class="rune-title text-[10px] text-rust">Do not</p>
+                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm text-parchment-muted">
+                    {zone.warnings.map((warning) => (
+                      <li>{warning}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </Panel>
+          </article>
+        );
+      })
+    }
+
+    <Panel class="p-6 sm:p-8">
+      <h2 class="font-display text-2xl text-parchment">Landmarks to mark</h2>
+      <p class="mt-2 text-parchment-muted">
+        Stored in this browser only. Optional stops are labeled; skip them if a boss is already teaching you enough.
+      </p>
+      <div class="mt-6">
+        <Checklist client:load groups={groups} />
+      </div>
+    </Panel>
+  </div>
+</BaseLayout>

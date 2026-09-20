@@ -1,0 +1,17 @@
+---
+import ErdtreeMark from "../components/ErdtreeMark.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Lost grace" description="This path is not on the map.">
+  <div class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center px-4 py-24 text-center">
+    <ErdtreeMark class="h-16 w-16" />
+    <h1 class="rune-title mt-6 text-3xl text-gold-bright">Site of grace not found</h1>
+    <p class="mt-4 text-parchment-muted">
+      This path is not on the map. Return to the Codex, or take the recommended route through Limgrave.
+    </p>
+    <a href="/" class="rune-title mt-8 border border-gold/40 px-4 py-2 text-xs text-gold hover:text-gold-bright">
+      Return to the Codex
+    </a>
+  </div>
+</BaseLayout>

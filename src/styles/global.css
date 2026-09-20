@@ -1,0 +1,91 @@
+@import "@fontsource/cinzel/400.css";
+@import "@fontsource/cinzel/600.css";
+@import "@fontsource/cinzel/700.css";
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/source-serif-4/400-italic.css";
+@import "@fontsource/source-serif-4/600.css";
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cinzel", ui-serif, Georgia, "Times New Roman", serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+  --color-obsidian: #0c0b0a;
+  --color-obsidian-panel: #141210;
+  --color-obsidian-raised: #1c1914;
+  --color-gold: #c9a227;
+  --color-gold-bright: #e8d48b;
+  --color-gold-dim: #8a7018;
+  --color-parchment: #e6dcc8;
+  --color-parchment-muted: #b8ad96;
+  --color-parchment-faint: #8d8574;
+  --color-rust: #8c3b32;
+  --color-moss: #6b7a4e;
+  --color-glint: #4a6d8c;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-obsidian);
+  }
+
+  body {
+    font-family: var(--font-serif);
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -8%, rgb(201 162 39 / 0.14), transparent 52%),
+      radial-gradient(ellipse 50% 40% at 100% 100%, rgb(140 59 50 / 0.1), transparent 48%),
+      var(--color-obsidian);
+    color: var(--color-parchment);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgb(201 162 39 / 0.35);
+    color: var(--color-parchment);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility rune-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(201 162 39 / 0.7) 20%,
+    rgb(232 212 139 / 0.95) 50%,
+    rgb(201 162 39 / 0.7) 80%,
+    transparent
+  );
+}
+
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
