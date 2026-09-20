@@ -1,38 +1,33 @@
 ---
-import ErdtreeMark from "../components/ErdtreeMark.astro";
-import Panel from "../components/Panel.astro";
-import ProgressHud from "../components/ProgressHud.svelte";
-import VideoEmbed from "../components/VideoEmbed.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { flaskPickups } from "../data/flasks";
-import { starterBuilds } from "../data/builds";
-import { allLandmarks, zones } from "../data/zones";
-import { challengeVideos } from "../data/challenges";
+import ErdtreeMark from "../../components/ErdtreeMark.astro";
+import Panel from "../../components/Panel.astro";
+import ProgressHud from "../../components/ProgressHud.svelte";
+import VideoEmbed from "../../components/VideoEmbed.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { flaskPickups } from "../../data/flasks";
+import { starterBuilds } from "../../data/builds";
+import { allLandmarks, zones } from "../../data/zones";
+import { challengeVideos } from "../../data/challenges";
 
-const locale = Astro.currentLocale || "en";
-const isZh = locale === "zh-tw";
-const localePrefix = isZh ? "/zh-tw" : "";
+const locale = "zh-tw";
+const isZh = true;
+const localePrefix = "/zh-tw";
 const trackedIds = [...allLandmarks().map((item) => item.id), ...flaskPickups.map((item) => item.id)];
 
-
 const t = {
-  title: isZh ? "The Tarnished Codex" : "The Tarnished Codex",
-  tagline: isZh ? "艾爾登法環 推薦路線" : "A guide for the Lands Between",
-  intro: isZh
-    ? "從寧姆格拉夫到羅德爾王城的推薦首周目路線。優先存活、升級聖杯、完成一個 builds。"
-    : "A recommended first path from Limgrave to Leyndell. Survive first, upgrade the flask, and finish one build before you start another.",
-  orderTitle: isZh ? "無牢籠的秩序" : "Order without a prison",
-  surviveTitle: isZh ? "優先存活" : "Survive first",
-  buildTitle: isZh ? "有意識地 builds" : "Build with intent",
-  routeTitle: isZh ? "五區域通往黃金樹" : "Five zones to the Erdtree",
-  openRoute: isZh ? "開啟路線" : "Open the route",
-  flaskTitle: isZh ? "聖杯升級" : "Flask upgrades",
-  flaskLink: isZh ? "開啟聖杯記錄" : "Open the flask ledger",
-  buildLink: isZh ? "開啟 archetypes" : "Open the archetypes",
-  challengeTitle: isZh ? "挑戰影片" : "Challenge Videos",
-  challengeIntro: isZh
-    ? "精選真實可嵌入的 YouTube 挑戰影片（武器限定、無HP升級、無物品跑）。此為人工精選目錄，非即時搜尋。"
-    : "Curated embeddable YouTube challenge runs (weapon-only, no-HP-leveling, no-item). Hand-curated catalogue, not a live feed.",
+  title: "The Tarnished Codex",
+  tagline: "艾爾登法環 推薦路線",
+  intro: "從寧姆格拉夫到羅德爾王城的推薦首周目路線。優先存活、升級聖杯、完成一個 builds。",
+  orderTitle: "無牢籠的秩序",
+  surviveTitle: "優先存活",
+  buildTitle: "有意識地 builds",
+  routeTitle: "五區域通往黃金樹",
+  openRoute: "開啟路線",
+  flaskTitle: "聖杯升級",
+  flaskLink: "開啟聖杯記錄",
+  buildLink: "開啟 archetypes",
+  challengeTitle: "挑戰影片",
+  challengeIntro: "精選真實可嵌入的 YouTube 挑戰影片（武器限定、無HP升級、無物品跑）。此為人工精選目錄，非即時搜尋。",
 };
 ---
 
@@ -58,27 +53,21 @@ const t = {
         <p class="rune-title text-[10px] text-gold">01</p>
         <h2 class="mt-3 font-display text-xl text-parchment">{t.orderTitle}</h2>
         <p class="mt-3 text-parchment-muted">
-          {isZh
-            ? "黃金樹之間不會告訴你該往哪走。本法典會：一個首周目路線，讓你活得夠久來學習遊戲。教會或洞穴拉你偏離時就繞道。"
-            : "The Lands Between will not tell you where to walk. This Codex does: a first-playthrough order that keeps you alive long enough to learn the game. Detour whenever a church or cave pulls you off the road."}
+          黃金樹之間不會告訴你該往哪走。本法典會：一個首周目路線，讓你活得夠久來學習遊戲。教會或洞穴拉你偏離時就繞道。
         </p>
       </Panel>
       <Panel class="p-6">
         <p class="rune-title text-[10px] text-gold">02</p>
         <h2 class="mt-3 font-display text-xl text-parchment">{t.surviveTitle}</h2>
         <p class="mt-3 text-parchment-muted">
-          {isZh
-            ? "金種子與聖杯之淚的優先級高於你還沒準備好的武器。活力就是武器。許多褪色者因為把早期盧恩花在傷害上而倒下。"
-            : "Golden Seeds and Sacred Tears outpace any weapon you are not ready to use. Vigor is a weapon. Many Tarnished fall because they spent early runes on damage."}
+          金種子與聖杯之淚的優先級高於你還沒準備好的武器。活力就是武器。許多褪色者因為把早期盧恩花在傷害上而倒下。
         </p>
       </Panel>
       <Panel class="p-6">
         <p class="rune-title text-[10px] text-gold">03</p>
         <h2 class="mt-3 font-display text-xl text-parchment">{t.buildTitle}</h2>
         <p class="mt-3 text-parchment-muted">
-          {isZh
-            ? "完成一個初始 builds（流浪者力量、武士出血或星術師魔法）就能帶你通過王城。三個半成品 builds 不行。"
-            : "One finished starter - Vagabond strength, Samurai bleed, or Astrologer sorcery - will carry you through the capital. Three half-made builds will not."}
+          完成一個初始 builds（流浪者力量、武士出血或星術師魔法）就能帶你通過王城。三個半成品 builds 不行。
         </p>
       </Panel>
     </div>
@@ -87,7 +76,7 @@ const t = {
   <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
     <div class="mb-6 flex items-end justify-between gap-4">
       <div>
-        <p class="rune-title text-[11px] text-gold">{isZh ? "Phase 1 路線" : "Phase 1 route"}</p>
+        <p class="rune-title text-[11px] text-gold">Phase 1 路線</p>
         <h2 class="mt-2 font-display text-2xl text-parchment">{t.routeTitle}</h2>
       </div>
       <a href={`${localePrefix}/progression`} class="rune-title text-[11px] text-gold hover:text-gold-bright">{t.openRoute}</a>
@@ -115,10 +104,9 @@ const t = {
   <section class="mx-auto mt-16 grid max-w-6xl gap-4 px-4 sm:px-6 md:grid-cols-2">
     <Panel class="p-6">
       <p class="rune-title text-[11px] text-gold">Survival</p>
-      <h2 class="mt-2 font-display text-2xl text-parchment">Flask upgrades</h2>
+      <h2 class="mt-2 font-display text-2xl text-parchment">{t.flaskTitle}</h2>
       <p class="mt-3 text-parchment-muted">
-        Early Golden Seeds and Sacred Tears through Leyndell, as a checklist that remembers what you have already
-        pocketed.
+        Early Golden Seeds and Sacred Tears through Leyndell, as a checklist that remembers what you have already pocketed.
       </p>
       <a href={`${localePrefix}/flasks`} class="rune-title mt-4 inline-block text-[11px] text-gold hover:text-gold-bright">
         {t.flaskLink}
@@ -136,16 +124,13 @@ const t = {
     </Panel>
   </section>
 
-  <!-- Challenge video discovery section: curated, static, embed-facade rendered -->
   <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
     <div class="mb-6">
-      <p class="rune-title text-[11px] text-gold">{isZh ? "挑戰探索" : "Discover"}</p>
+      <p class="rune-title text-[11px] text-gold">挑戰探索</p>
       <h2 class="mt-2 font-display text-2xl text-parchment">{t.challengeTitle}</h2>
       <p class="mt-3 max-w-2xl text-parchment-muted">{t.challengeIntro}</p>
       <p class="mt-1 text-xs text-parchment-faint">
-        {isZh
-          ? "使用官方 trailer 嵌入 + 點擊載入隱私 facade。僅收錄可嵌入的真實影片。"
-          : "Uses official trailer embeds + click-to-load privacy facade. Only real embeddable videos included."}
+        使用官方 trailer 嵌入 + 點擊載入隱私 facade。僅收錄可嵌入的真實影片。
       </p>
     </div>
 
@@ -160,9 +145,7 @@ const t = {
     </div>
 
     <p class="mt-4 text-xs text-parchment-faint">
-      {isZh
-        ? "此為 Phase 1 人工精選目錄。後續階段可能自動化（需額外授權）。"
-        : "Phase 1 hand-curated catalogue. Later automation (YouTube Data API etc.) requires separate captain authorization."}
+      此為 Phase 1 人工精選目錄。後續階段可能自動化（需額外授權）。
     </p>
   </section>
 </BaseLayout>

@@ -1,19 +1,24 @@
 <script lang="ts">
   import { zones } from "../data/zones";
 
-  let { currentPath = "/" }: { currentPath?: string } = $props();
+  let {
+    currentPath = "/",
+    currentLocale = "en",
+  }: { currentPath?: string; currentLocale?: string } = $props();
   let open = $state(false);
 
+  const localePrefix = currentLocale === "zh-tw" ? "/zh-tw" : "";
   const links = [
-    { href: "/", label: "Codex" },
-    { href: "/progression", label: "Route" },
-    { href: "/flasks", label: "Flasks" },
-    { href: "/builds", label: "Builds" },
+    { href: `${localePrefix}/`, label: currentLocale === "zh-tw" ? "法典" : "Codex" },
+    { href: `${localePrefix}/progression`, label: currentLocale === "zh-tw" ? "路線" : "Route" },
+    { href: `${localePrefix}/flasks`, label: currentLocale === "zh-tw" ? "聖杯" : "Flasks" },
+    { href: `${localePrefix}/builds`, label: currentLocale === "zh-tw" ? "Builds" : "Builds" },
   ];
 
   function isActive(href: string): boolean {
-    if (href === "/") return currentPath === "/";
-    return currentPath === href || currentPath.startsWith(`${href}/`);
+    const normalized = currentPath.replace(/^\/zh-tw/, "");
+    if (href === `${localePrefix}/` || href === "/") return normalized === "/" || normalized === "";
+    return normalized === href.replace(localePrefix, "") || normalized.startsWith(`${href.replace(localePrefix, "")}/`);
   }
 
   function close() {
@@ -25,7 +30,7 @@
   class="sticky top-0 z-40 border-b border-gold/20 bg-obsidian/85 backdrop-blur-md"
 >
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-    <a href="/" class="flex items-center gap-3 text-gold-bright" onclick={close}>
+    <a href={localePrefix + "/"} class="flex items-center gap-3 text-gold-bright" onclick={close}>
       <svg class="h-8 w-8" viewBox="0 0 64 64" fill="none" aria-hidden="true">
         <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.2" opacity="0.55"></circle>
         <path
@@ -55,14 +60,14 @@
         <summary
           class="rune-title cursor-pointer list-none px-3 py-2 text-[11px] text-parchment-muted hover:text-gold"
         >
-          Zones
+          {currentLocale === "zh-tw" ? "區域" : "Zones"}
         </summary>
         <div
           class="absolute right-0 mt-2 w-56 border border-gold/25 bg-obsidian-panel p-2 shadow-xl"
         >
           {#each zones as zone}
             <a
-              href={`/progression#${zone.id}`}
+              href={`${localePrefix}/progression#${zone.id}`}
               class="flex items-baseline justify-between px-3 py-2 text-sm text-parchment hover:bg-obsidian-raised hover:text-gold-bright"
             >
               <span>{zone.shortName}</span>
@@ -71,6 +76,17 @@
           {/each}
         </div>
       </details>
+
+      <!-- Locale-aware language switcher -->
+      <a
+        href={currentLocale === "zh-tw"
+          ? currentPath.replace(/^\/zh-tw/, "") || "/"
+          : `/zh-tw${currentPath === "/" ? "" : currentPath}`}
+        class="rune-title ml-2 border border-gold/30 px-2 py-1 text-[10px] text-parchment-muted hover:text-gold"
+        aria-label={currentLocale === "zh-tw" ? "Switch to English" : "切換至繁體中文"}
+      >
+        {currentLocale === "zh-tw" ? "EN" : "繁中"}
+      </a>
     </nav>
 
     <button
@@ -96,16 +112,25 @@
             {link.label}
           </a>
         {/each}
-        <p class="rune-title pt-3 text-[10px] text-parchment-faint">Zones</p>
+        <p class="rune-title pt-3 text-[10px] text-parchment-faint">{currentLocale === "zh-tw" ? "區域" : "Zones"}</p>
         {#each zones as zone}
           <a
-            href={`/progression#${zone.id}`}
+            href={`${localePrefix}/progression#${zone.id}`}
             class="py-2 text-sm text-parchment-muted"
             onclick={close}
           >
             {zone.order}. {zone.shortName}
           </a>
         {/each}
+        <a
+          href={currentLocale === "zh-tw"
+            ? currentPath.replace(/^\/zh-tw/, "") || "/"
+            : `/zh-tw${currentPath === "/" ? "" : currentPath}`}
+          class="rune-title mt-3 border border-gold/30 px-3 py-2 text-[11px] text-parchment-muted"
+          onclick={close}
+        >
+          {currentLocale === "zh-tw" ? "Switch to English" : "切換至繁體中文"}
+        </a>
       </nav>
     </div>
   {/if}

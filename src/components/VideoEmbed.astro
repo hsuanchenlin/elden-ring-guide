@@ -1,0 +1,86 @@
+---
+interface Props {
+  youtubeId: string;
+  title: string;
+  /** Optional note shown under the embed area */
+  note?: string;
+}
+
+const { youtubeId, title, note } = Astro.props;
+const embedSrc = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`;
+const thumbSrc = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+---
+
+<div class="video-embed" data-youtube-id={youtubeId}>
+  <div class="relative aspect-video w-full overflow-hidden rounded border border-gold/20 bg-obsidian-panel">
+    <!-- Click-to-load facade: thumbnail + play button. Avoids loading iframe until user gesture. -->
+    <button
+      type="button"
+      class="group absolute inset-0 flex items-center justify-center bg-black/40 transition hover:bg-black/20"
+      aria-label={`Play ${title}`}
+      data-play-button
+    >
+      <img
+        src={thumbSrc}
+        alt={`Thumbnail for ${title}`}
+        class="absolute inset-0 h-full w-full object-cover opacity-90 transition group-hover:opacity-100"
+        loading="lazy"
+      />
+      <div
+        class="relative z-10 flex h-16 w-16 items-center justify-center rounded-full border-2 border-gold/80 bg-obsidian/80 text-gold transition group-hover:scale-110 group-hover:border-gold"
+      >
+        <svg class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <span class="absolute bottom-3 right-3 rounded bg-obsidian/90 px-2 py-0.5 text-[10px] text-gold">
+        YouTube
+      </span>
+    </button>
+
+    <!-- Iframe container, populated on click. Preserves referrer for embed analytics. -->
+    <div class="hidden h-full w-full" data-iframe-container></div>
+  </div>
+
+  <p class="mt-2 text-sm text-parchment-muted">{title}</p>
+  {note && <p class="text-xs text-parchment-faint">{note}</p>}
+</div>
+
+<script>
+  // Lightweight click-to-load without external deps. Replaces facade with iframe on first interaction.
+  function initVideoEmbeds() {
+    document.querySelectorAll<HTMLElement>(".video-embed").forEach((container) => {
+      const playBtn = container.querySelector<HTMLButtonElement>("[data-play-button]");
+      const iframeContainer = container.querySelector<HTMLElement>("[data-iframe-container]");
+      if (!playBtn || !iframeContainer) return;
+
+      playBtn.addEventListener(
+        "click",
+        () => {
+          const youtubeId = container.dataset.youtubeId;
+          if (!youtubeId) return;
+
+          const iframe = document.createElement("iframe");
+          iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`;
+          iframe.title = container.querySelector("p")?.textContent || "YouTube video";
+          iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+          iframe.allowFullscreen = true;
+          iframe.className = "h-full w-full border-0";
+          iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+
+          iframeContainer.innerHTML = "";
+          iframeContainer.appendChild(iframe);
+          iframeContainer.classList.remove("hidden");
+          playBtn.classList.add("hidden");
+        },
+        { once: true }
+      );
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initVideoEmbeds);
+  } else {
+    initVideoEmbeds();
+  }
+</script>

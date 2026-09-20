@@ -4,7 +4,14 @@ import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://tarnished-codex.workers.dev",
+  site: "https://tarnished-codex.xuanhsuan.workers.dev",
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "zh-tw"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [svelte()],
   vite: {
     plugins: [tailwindcss()],

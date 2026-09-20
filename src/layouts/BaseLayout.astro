@@ -2,21 +2,37 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.svelte";
 import "../styles/global.css";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props {
   title: string;
   description?: string;
+  /** Optional override for locale-specific metadata; defaults to Astro.currentLocale */
+  locale?: string;
 }
 
+const currentLocale = Astro.currentLocale || "en";
 const {
   title,
-  description = "A recommended Elden Ring progression route through Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell, with flask upgrades and starter builds.",
+  description = currentLocale === "zh-tw"
+    ? "艾爾登法環 推薦路線：從寧姆格拉夫到羅德爾王城，包含聖杯升級與初始 builds。"
+    : "A recommended Elden Ring progression route through Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell, with flask upgrades and starter builds.",
+  locale = currentLocale,
 } = Astro.props;
 const pageTitle = title.includes("Tarnished Codex") ? title : `${title} · Tarnished Codex`;
+
+const otherLocale = locale === "zh-tw" ? "en" : "zh-tw";
+// Build alternate URL by stripping any existing locale prefix from pathname
+let pathForOther = Astro.url.pathname;
+if (pathForOther.startsWith("/zh-tw")) {
+  pathForOther = pathForOther.replace("/zh-tw", "") || "/";
+}
+const alternateHref = getRelativeLocaleUrl(otherLocale, pathForOther);
+const canonicalHref = getRelativeLocaleUrl(locale, pathForOther);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,7 +41,18 @@ const pageTitle = title.includes("Tarnished Codex") ? title : `${title} · Tarni
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={locale === "zh-tw" ? "zh_TW" : "en_US"} />
+    <link rel="canonical" href={canonicalHref} />
+    <link rel="alternate" hreflang="en" href={getRelativeLocaleUrl("en", pathForOther)} />
+    <link rel="alternate" hreflang="zh-tw" href={getRelativeLocaleUrl("zh-tw", pathForOther)} />
+    <link rel="alternate" hreflang="x-default" href={getRelativeLocaleUrl("en", pathForOther)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {locale === "zh-tw" && (
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      />
+    )}
     <title>{pageTitle}</title>
   </head>
   <body class="grain antialiased">
@@ -35,7 +62,7 @@ const pageTitle = title.includes("Tarnished Codex") ? title : `${title} · Tarni
     >
       Skip to content
     </a>
-    <Header client:load currentPath={Astro.url.pathname} />
+    <Header client:load currentPath={Astro.url.pathname} currentLocale={locale} />
     <main id="content">
       <slot />
     </main>
