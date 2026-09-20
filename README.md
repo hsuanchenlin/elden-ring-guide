@@ -31,6 +31,10 @@ npm run build
 
 Requires Node.js 22.12 or newer.
 
+## Deploy
+
+Every push to `main` runs `.github/workflows/deploy.yml`, which publishes `dist/` to Cloudflare Workers as the static-assets Worker `tarnished-codex` configured in `wrangler.jsonc`. The workflow needs the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets. To deploy by hand, run `npm run build` and then `npx wrangler deploy` from `main`. Hashed assets under `/_astro/` are served with immutable cache headers from `public/_headers`.
+
 ## Stack
 
 - Astro for static pages

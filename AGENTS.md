@@ -4,9 +4,9 @@ Static Astro site for *The Tarnished Codex*, a Phase 1 Elden Ring progression gu
 
 ## Commands
 
-See `README.md` for local development commands and Node requirements.
+See `README.md` for local development commands, Node requirements, and deployment.
 
-`npx wrangler deploy` publishes `dist/` as a Cloudflare Workers static-assets Worker (`tarnished-codex`). GitHub Actions `.github/workflows/deploy.yml` runs this on `main`; do not deploy from a feature branch.
+Never run `npx wrangler deploy` from a feature branch; `main` deploys itself through `.github/workflows/deploy.yml`.
 
 ## Layout
 
