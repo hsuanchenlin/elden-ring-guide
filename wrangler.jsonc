@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tarnished-codex",
+  "compatibility_date": "2026-09-19",
+  "assets": {
+    "directory": "./dist",
+    // Nav hrefs (src/components/Header.svelte) omit the trailing slash while Astro
+    // emits `<route>/index.html`; without this, Workers answers `/progression` with a
+    // 307 to `/progression/` on every click. Keep in step with astro.config.mjs.
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

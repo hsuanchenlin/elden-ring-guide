@@ -4,7 +4,9 @@ Static Astro site for *The Tarnished Codex*, a Phase 1 Elden Ring progression gu
 
 ## Commands
 
-See `README.md` for local development commands and Node requirements.
+See `README.md` for local development commands, Node requirements, and deployment.
+
+Never run `npx wrangler deploy` from a feature branch; `main` deploys itself through `.github/workflows/deploy.yml`.
 
 ## Layout
 
