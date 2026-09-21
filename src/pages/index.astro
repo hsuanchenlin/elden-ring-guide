@@ -2,12 +2,21 @@
 import ErdtreeMark from "../components/ErdtreeMark.astro";
 import Panel from "../components/Panel.astro";
 import ProgressHud from "../components/ProgressHud.svelte";
+import VideoEmbed from "../components/VideoEmbed.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { flaskPickups } from "../data/flasks";
 import { starterBuilds } from "../data/builds";
 import { allLandmarks, zones } from "../data/zones";
+import { challengeVideos } from "../data/challenges";
+import { officialTrailer } from "../data/media";
+import type { ChallengeCategory } from "../data/types";
 
 const trackedIds = [...allLandmarks().map((item) => item.id), ...flaskPickups.map((item) => item.id)];
+const categoryLabels: Record<ChallengeCategory, string> = {
+  "weapon-only": "Weapon-only",
+  "no-hp-leveling": "No HP leveling",
+  "no-item": "No items",
+};
 ---
 
 <BaseLayout title="The Tarnished Codex">
@@ -106,5 +115,53 @@ const trackedIds = [...allLandmarks().map((item) => item.id), ...flaskPickups.ma
         Open the archetypes
       </a>
     </Panel>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6">
+      <p class="rune-title text-[11px] text-gold">Watch</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">Official trailer</h2>
+      <p class="mt-3 max-w-2xl text-parchment-muted">
+        The publisher's launch trailer, embedded from its own channel through YouTube's privacy-enhanced player. Only
+        official trailers and self-captured gameplay are ever used here; no press or official-site imagery is
+        rehosted. Nothing loads from YouTube until you press play.
+      </p>
+    </div>
+    <div class="max-w-3xl">
+      <VideoEmbed
+        youtubeId={officialTrailer.youtubeId}
+        title={officialTrailer.title}
+        label="Official trailer"
+        caption={`${officialTrailer.publisher} · ${officialTrailer.published}`}
+      />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6">
+      <p class="rune-title text-[11px] text-gold">Discover</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">Challenge runs</h2>
+      <p class="mt-3 max-w-2xl text-parchment-muted">
+        Recent runs under the three constraints this guide tracks: weapon-only, no HP leveling, and no items. Each
+        tile is a click-to-load embed from the runner's channel.
+      </p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        challengeVideos.map((video) => (
+          <VideoEmbed
+            youtubeId={video.youtubeId}
+            title={video.title}
+            label={categoryLabels[video.category]}
+            caption={`${video.runner} · ${video.published}`}
+          />
+        ))
+      }
+    </div>
+
+    <p class="mt-4 text-xs text-parchment-faint">
+      Hand-picked for Phase 1 and refreshed by hand, not a live feed.
+    </p>
   </section>
 </BaseLayout>

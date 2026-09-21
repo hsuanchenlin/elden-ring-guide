@@ -1,0 +1,170 @@
+---
+import ErdtreeMark from "../../components/ErdtreeMark.astro";
+import Panel from "../../components/Panel.astro";
+import ProgressHud from "../../components/ProgressHud.svelte";
+import VideoEmbed from "../../components/VideoEmbed.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "@fontsource/noto-sans-tc/400.css";
+import { flaskPickups } from "../../data/flasks";
+import { starterBuilds } from "../../data/builds";
+import { allLandmarks, zones } from "../../data/zones";
+import { challengeVideos } from "../../data/challenges";
+import { officialTrailer } from "../../data/media";
+import { starterBuildCopyZhTw, zoneCopyZhTw } from "../../data/zh-tw";
+import type { ChallengeCategory } from "../../data/types";
+import { linkFor } from "../../lib/i18n";
+
+const trackedIds = [...allLandmarks().map((item) => item.id), ...flaskPickups.map((item) => item.id)];
+const progressionHref = linkFor("zh-tw", "/progression");
+const flasksHref = linkFor("zh-tw", "/flasks");
+const buildsHref = linkFor("zh-tw", "/builds");
+const categoryLabels: Record<ChallengeCategory, string> = {
+  "weapon-only": "武器限定",
+  "no-hp-leveling": "不升生命力",
+  "no-item": "不用道具",
+};
+const intro = "從寧姆格福到王城羅德爾的首周目推薦路線。先求生存、升級聖杯瓶，練完一套流派再開下一套。";
+---
+
+<BaseLayout title="The Tarnished Codex" description={intro}>
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 sm:pt-24">
+      <div class="flex flex-col items-center text-center">
+        <ErdtreeMark class="mb-6 h-20 w-20 text-gold" />
+        <p class="rune-title text-[11px] text-gold">交界地指南</p>
+        <h1 class="rune-title mt-4 text-3xl text-gold-bright sm:text-5xl">The Tarnished Codex</h1>
+        <div class="gold-rule mx-auto mt-6 w-48"></div>
+        <p class="mt-6 max-w-2xl text-lg text-parchment-muted">{intro}</p>
+        <ProgressHud client:load ids={trackedIds} label="此瀏覽器已記錄：" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-4 md:grid-cols-3">
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">01</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">有序，而非牢籠</h2>
+        <p class="mt-3 text-parchment-muted">
+          交界地不會告訴你該往哪裡走，本法典會：一條首周目的推薦順序，讓你活得夠久、學會這款遊戲。若教堂或洞窟把你引離大路，儘管繞過去。
+        </p>
+      </Panel>
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">02</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">先求生存</h2>
+        <p class="mt-3 text-parchment-muted">
+          黃金種子與聖杯露滴，比任何你還駕馭不了的武器都更值得優先。生命力就是武器。許多褪色者倒下，是因為把早期的盧恩全花在傷害上。
+        </p>
+      </Panel>
+      <Panel class="p-6">
+        <p class="rune-title text-[10px] text-gold">03</p>
+        <h2 class="mt-3 font-display text-xl text-parchment">專心練成一套</h2>
+        <p class="mt-3 text-parchment-muted">
+          練完一套初始流派（流浪騎士的力氣、武士的出血或占星家的魔法），就足以帶你穿過王城；三套半成品則不行。
+        </p>
+      </Panel>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="rune-title text-[11px] text-gold">第一階段路線</p>
+        <h2 class="mt-2 font-display text-2xl text-parchment">通往黃金樹的五個區域</h2>
+      </div>
+      <a href={progressionHref} class="rune-title text-[11px] text-gold hover:text-gold-bright">開啟路線（英文）</a>
+    </div>
+    <ol class="grid gap-3 md:grid-cols-5">
+      {
+        zones.map((zone) => (
+          <li>
+            <a
+              href={`${progressionHref}#${zone.id}`}
+              class="panel relative flex h-full min-h-40 flex-col border border-gold/20 bg-obsidian-panel/90 p-4 transition-colors hover:border-gold"
+              style={`border-top: 2px solid ${zone.accent}`}
+            >
+              <p class="rune-title text-[10px] text-gold">{String(zone.order).padStart(2, "0")}</p>
+              <h3 class="mt-2 font-display text-lg text-parchment">{zoneCopyZhTw[zone.id].name}</h3>
+              <p class="mt-auto pt-3 text-xs text-parchment-faint">等級 {zoneCopyZhTw[zone.id].levelRange}</p>
+              <p class="text-xs text-parchment-muted">武器強化 {zoneCopyZhTw[zone.id].weaponUpgrade}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="mx-auto mt-16 grid max-w-6xl gap-4 px-4 sm:px-6 md:grid-cols-2">
+    <Panel class="p-6">
+      <p class="rune-title text-[11px] text-gold">生存</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">聖杯瓶升級</h2>
+      <p class="mt-3 text-parchment-muted">
+        王城羅德爾之前可取得的早期黃金種子與聖杯露滴，整理成一份會記住你已收進口袋哪些的清單。
+      </p>
+      <a href={flasksHref} class="rune-title mt-4 inline-block text-[11px] text-gold hover:text-gold-bright">
+        開啟聖杯瓶清單（英文）
+      </a>
+    </Panel>
+    <Panel class="p-6">
+      <p class="rune-title text-[11px] text-gold">職業</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">初始流派</h2>
+      <ul class="mt-3 space-y-1 text-parchment-muted">
+        {
+          starterBuilds.map((build) => (
+            <li>
+              {starterBuildCopyZhTw[build.id].className} - {starterBuildCopyZhTw[build.id].archetype}
+            </li>
+          ))
+        }
+      </ul>
+      <a href={buildsHref} class="rune-title mt-4 inline-block text-[11px] text-gold hover:text-gold-bright">
+        開啟流派介紹（英文）
+      </a>
+    </Panel>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6">
+      <p class="rune-title text-[11px] text-gold">觀看</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">官方預告片</h2>
+      <p class="mt-3 max-w-2xl text-parchment-muted">
+        發行商頻道的上市預告，透過 YouTube 隱私強化播放器嵌入。本法典的視覺素材一律只採用官方預告與自行擷取的遊戲畫面，不轉載官網或媒體資料圖片；按下播放前不會向 YouTube 載入任何內容。
+      </p>
+    </div>
+    <div class="max-w-3xl">
+      <VideoEmbed
+        youtubeId={officialTrailer.youtubeId}
+        title={officialTrailer.title}
+        label="官方預告片"
+        caption={`${officialTrailer.publisher} · ${officialTrailer.published}`}
+        playLabel="播放"
+      />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="mb-6">
+      <p class="rune-title text-[11px] text-gold">探索</p>
+      <h2 class="mt-2 font-display text-2xl text-parchment">挑戰影片</h2>
+      <p class="mt-3 max-w-2xl text-parchment-muted">
+        近期的挑戰影片，涵蓋本指南關注的三種限制：武器限定、不升生命力、不用道具。每一格都是來自跑者頻道、點擊後才載入的嵌入影片。
+      </p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        challengeVideos.map((video) => (
+          <VideoEmbed
+            youtubeId={video.youtubeId}
+            title={video.title}
+            label={categoryLabels[video.category]}
+            caption={`${video.runner} · ${video.published}`}
+            playLabel="播放"
+          />
+        ))
+      }
+    </div>
+
+    <p class="mt-4 text-xs text-parchment-faint">第一階段的目錄由人工挑選並手動更新，並非即時搜尋結果。</p>
+  </section>
+</BaseLayout>

@@ -7,7 +7,7 @@
     loadChecklist,
   } from "../lib/checklist";
 
-  let { ids }: { ids: string[] } = $props();
+  let { ids, label = "Tracked in this browser:" }: { ids: string[]; label?: string } = $props();
   let collected = $state(0);
 
   onMount(() => {
@@ -17,7 +17,7 @@
 </script>
 
 <p class="text-sm text-parchment-muted">
-  Tracked in this browser:
+  {label}
   <span class="text-gold-bright">{collected}</span>
   / {ids.length}
 </p>
