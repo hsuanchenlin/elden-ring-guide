@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { isPublished, linkFor, pathFor, routeOf, switchLocalePath } from "./i18n";
+import { isPublished, linkFor, localeOf, pathFor, routeOf, switchLocalePath } from "./i18n";
+
+describe("localeOf", () => {
+  it("reads the locale from the leading /zh-tw segment only", () => {
+    expect(localeOf("/")).toBe("en");
+    expect(localeOf("/progression")).toBe("en");
+    expect(localeOf("/zh-tw")).toBe("zh-tw");
+    expect(localeOf("/zh-tw/")).toBe("zh-tw");
+    expect(localeOf("/zh-tw/progression")).toBe("zh-tw");
+    expect(localeOf("/zh-twist")).toBe("en");
+  });
+});
 
 describe("routeOf", () => {
   it("strips the zh-TW prefix and any trailing slash", () => {

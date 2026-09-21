@@ -10,9 +10,15 @@ const prefixes: Record<Locale, string> = { en: "", "zh-tw": "/zh-tw" };
  */
 const zhTwRoutes = new Set<string>(["/"]);
 
+const zhTwPrefix = /^\/zh-tw(?=\/|$)/;
+
+export function localeOf(pathname: string): Locale {
+  return zhTwPrefix.test(pathname) ? "zh-tw" : "en";
+}
+
 /** Locale-free route for a pathname: "/zh-tw/progression/" -> "/progression", "/zh-tw" -> "/". */
 export function routeOf(pathname: string): string {
-  const route = pathname.replace(/^\/zh-tw(?=\/|$)/, "").replace(/\/+$/, "");
+  const route = pathname.replace(zhTwPrefix, "").replace(/\/+$/, "");
   return route || "/";
 }
 
