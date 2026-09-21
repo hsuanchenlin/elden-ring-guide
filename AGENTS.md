@@ -10,8 +10,8 @@ Never run `npx wrangler deploy` from a feature branch; `main` deploys itself thr
 
 ## Layout
 
-- Route, flask, and build copy lives in `src/data/`. Edit those modules instead of hard-coding page prose when the facts change.
-- Pages are `src/pages/{index,progression,flasks,builds,404}.astro`.
+- Route, flask, build, and video copy lives in `src/data/`. Edit those modules instead of hard-coding page prose when the facts change.
+- Pages are `src/pages/{index,progression,flasks,builds,404}.astro` and `src/pages/zh-tw/index.astro`.
 - Shared chrome is `src/layouts/BaseLayout.astro` plus `src/components/`.
 - Design tokens (Erdtree gold, obsidian, parchment) are `@theme` entries in `src/styles/global.css`.
 - Checklist persistence is `src/lib/checklist.ts`, stored under `tarnished-codex:v1` in `localStorage`. Tests should inject `memoryStorage()` rather than touching a browser.
