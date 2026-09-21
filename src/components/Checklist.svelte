@@ -7,6 +7,7 @@
     createChecklistSession,
     type ChecklistState,
   } from "../lib/checklist";
+  import type { Locale } from "../lib/i18n";
 
   export type ChecklistItem = {
     id: string;
@@ -24,10 +25,14 @@
   let {
     groups,
     storageKey = CHECKLIST_STORAGE_KEY,
+    locale = "en",
   }: {
     groups: ChecklistGroup[];
     storageKey?: string;
+    locale?: Locale;
   } = $props();
+
+  const zh = $derived(locale === "zh-tw");
 
   let state = $state<ChecklistState>({});
   let ready = $state(false);
@@ -61,21 +66,28 @@
 <div class="space-y-8" data-ready={ready}>
   <div class="flex flex-wrap items-end justify-between gap-3">
     <p class="text-sm text-parchment-muted">
-      <span class="text-gold-bright">{collected}</span>
-      of {ids.length} marked
+      {#if zh}
+        <span class="text-gold-bright">{collected}</span>
+        / {ids.length} 已標記
+      {:else}
+        <span class="text-gold-bright">{collected}</span>
+        of {ids.length} marked
+      {/if}
     </p>
     <button
       type="button"
       class="rune-title border border-gold/30 px-3 py-1.5 text-[10px] text-parchment-muted hover:text-gold"
       onclick={onReset}
     >
-      Reset list
+      {zh ? "重設清單" : "Reset list"}
     </button>
   </div>
 
   {#if ready && !persisting}
     <p role="status" class="border border-rust/40 bg-rust/10 px-3 py-2 text-sm text-parchment">
-      Changes cannot be saved in this browser; your marks will reset when you leave.
+      {zh
+        ? "這個瀏覽器無法儲存變更；離開後標記會消失。"
+        : "Changes cannot be saved in this browser; your marks will reset when you leave."}
     </p>
   {/if}
 
@@ -105,7 +117,7 @@
                 <span class="flex flex-wrap items-baseline gap-2">
                   <span class="font-medium text-parchment">{item.title}</span>
                   {#if item.optional}
-                    <span class="rune-title text-[9px] text-parchment-faint">Optional</span>
+                    <span class="rune-title text-[9px] text-parchment-faint">{zh ? "可選" : "Optional"}</span>
                   {/if}
                   {#if item.meta}
                     <span class="text-xs text-parchment-faint">{item.meta}</span>

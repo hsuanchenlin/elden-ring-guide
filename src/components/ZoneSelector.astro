@@ -1,11 +1,14 @@
 ---
+import { zoneCopyZhTw } from "../data/zh-tw";
 import { zones } from "../data/zones";
+import type { Locale } from "../lib/i18n";
 
 interface Props {
   current?: string;
+  locale?: Locale;
 }
 
-const { current } = Astro.props;
+const { current, locale = "en" } = Astro.props;
 ---
 
 <nav
@@ -26,7 +29,7 @@ const { current } = Astro.props;
             ]}
           >
             <span class="text-gold">{String(zone.order).padStart(2, "0")}</span>
-            {zone.shortName}
+            {locale === "zh-tw" ? zoneCopyZhTw[zone.id].name : zone.shortName}
           </a>
         </li>
       ))
