@@ -1,0 +1,124 @@
+---
+import Checklist from "../../components/Checklist.svelte";
+import Panel from "../../components/Panel.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { flaskPickups, pickupQuantity, pickupsByKind, seedThresholds, totalQuantity } from "../../data/flasks";
+import { zoneCopyZhTw } from "../../data/zh-tw";
+import { zones } from "../../data/zones";
+import "@fontsource/noto-sans-tc/400.css";
+
+const seeds = pickupsByKind("golden-seed");
+const tears = pickupsByKind("sacred-tear");
+const zoneName = Object.fromEntries(zones.map((zone) => [zone.id, zoneCopyZhTw[zone.id].name]));
+
+function pickupMeta(pickup: (typeof flaskPickups)[number]): string {
+  const parts = [zoneName[pickup.zone], pickup.location];
+  const quantity = pickupQuantity(pickup);
+  if (quantity > 1) parts.push(`${quantity} ${pickup.kind === "golden-seed" ? "種子" : "露滴"}`);
+  return parts.join(" · ");
+}
+
+const seedGroups = [
+  {
+    heading: "",
+    items: seeds.map((pickup) => ({
+      id: pickup.id,
+      title: pickup.name,
+      detail: pickup.detail,
+      optional: pickup.priority === "detour" || pickup.id === "seed-keepsake",
+      meta: pickupMeta(pickup),
+    })),
+  },
+];
+
+const tearGroups = [
+  {
+    heading: "",
+    items: tears.map((pickup) => ({
+      id: pickup.id,
+      title: pickup.name,
+      detail: pickup.detail,
+      optional: pickup.priority === "detour",
+      meta: pickupMeta(pickup),
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="聖杯瓶升級"
+  description="王城羅德爾之前可取得的早期黃金種子與聖杯露滴，附持久清單與聖杯瓶次數表。"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <p class="rune-title text-[11px] text-gold">生存清單</p>
+    <h1 class="rune-title mt-3 text-3xl text-gold-bright sm:text-4xl">聖杯瓶升級</h1>
+    <p class="mt-4 max-w-3xl text-lg text-parchment-muted">
+      聖杯露滴提高每一口的回復量，黃金種子提高可喝的次數。第一階段列出雪山之前的每一滴露滴，以及不用離開寧姆格福到王城羅德爾這條路就能拿到的種子。
+    </p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      <Panel class="flex h-full flex-col p-5">
+        <p class="rune-title text-[10px] text-gold">起始聖杯瓶</p>
+        <p class="mt-2 text-2xl text-gold-bright">4 次</p>
+        <p class="mt-2 text-sm text-parchment-muted">在賜福可把次數自由分配給緋紅與青色。</p>
+      </Panel>
+      <Panel class="flex h-full flex-col p-5">
+        <p class="rune-title text-[10px] text-gold">前幾小時目標</p>
+        <p class="mt-2 text-2xl text-gold-bright">7-8 次，效力 +3-4</p>
+        <p class="mt-2 text-sm text-parchment-muted">風暴丘陵、海德要塞、啜泣半島一圈，以及瑪莉卡第三教堂。</p>
+      </Panel>
+      <Panel class="flex h-full flex-col p-5">
+        <p class="rune-title text-[10px] text-gold">本頁收錄</p>
+        <p class="mt-2 text-2xl text-gold-bright">{flaskPickups.length} 處</p>
+        <p class="mt-2 text-sm text-parchment-muted">
+          {seeds.length} 處共 {totalQuantity(seeds)} 顆種子 · 至王城羅德爾共 {tears.length} 滴露滴。
+        </p>
+      </Panel>
+    </div>
+
+    <Panel class="mt-8 overflow-x-auto p-6">
+      <h2 class="font-display text-2xl text-parchment">種子與次數對照</h2>
+      <table class="mt-4 w-full min-w-[28rem] text-left text-sm">
+        <thead class="rune-title text-[10px] text-parchment-faint">
+          <tr>
+            <th class="pb-2 font-normal">聖杯瓶次數</th>
+            <th class="pb-2 font-normal">所需種子（累計）</th>
+            <th class="pb-2 font-normal">此階種子</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            seedThresholds.map((row, index) => {
+              const previous = seedThresholds[index - 1];
+              const step = previous ? row.totalSeeds - previous.totalSeeds : 0;
+              return (
+                <tr class="border-t border-gold/10">
+                  <td class="py-2 text-gold-bright">{row.charges}</td>
+                  <td class="py-2">{row.totalSeeds}</td>
+                  <td class="py-2 text-parchment-muted">{step === 0 ? "起始" : `+${step}`}</td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+    </Panel>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-2">
+      <Panel class="p-6">
+        <h2 class="font-display text-2xl text-parchment">黃金種子</h2>
+        <p class="mt-2 text-sm text-parchment-muted">多半在幻影小樹下，有時由樹靈掉落。</p>
+        <div class="mt-6">
+          <Checklist client:load groups={seedGroups} locale="zh-tw" />
+        </div>
+      </Panel>
+      <Panel class="p-6">
+        <h2 class="font-display text-2xl text-parchment">聖杯露滴</h2>
+        <p class="mt-2 text-sm text-parchment-muted">幾乎都在教堂祭壇。兩座雪山教堂留到後續階段再收。</p>
+        <div class="mt-6">
+          <Checklist client:load groups={tearGroups} locale="zh-tw" />
+        </div>
+      </Panel>
+    </div>
+  </div>
+</BaseLayout>

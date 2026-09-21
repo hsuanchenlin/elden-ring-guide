@@ -2,13 +2,16 @@ export type Locale = "en" | "zh-tw";
 
 export const locales: Locale[] = ["en", "zh-tw"];
 
+/** Primary nav routes. Each has a page under src/pages/zh-tw/. */
+export const primaryRoutes = ["/", "/progression", "/flasks", "/builds"] as const;
+
 const prefixes: Record<Locale, string> = { en: "", "zh-tw": "/zh-tw" };
 
 /**
  * English routes that also exist under /zh-tw. English publishes every route;
  * add a route here when its translated page lands under src/pages/zh-tw/.
  */
-const zhTwRoutes = new Set<string>(["/"]);
+const zhTwRoutes = new Set<string>(primaryRoutes);
 
 const zhTwPrefix = /^\/zh-tw(?=\/|$)/;
 

@@ -1,0 +1,121 @@
+---
+import Checklist from "../../components/Checklist.svelte";
+import Panel from "../../components/Panel.astro";
+import ZoneSelector from "../../components/ZoneSelector.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { flaskPickups } from "../../data/flasks";
+import { zoneCopyZhTw } from "../../data/zh-tw";
+import { zones } from "../../data/zones";
+import { linkFor } from "../../lib/i18n";
+import "@fontsource/noto-sans-tc/400.css";
+
+const flasksHref = linkFor("zh-tw", "/flasks");
+const groups = zones.map((zone) => ({
+  heading: zoneCopyZhTw[zone.id].name,
+  items: zone.landmarks.map((landmark) => ({
+    id: landmark.id,
+    title: landmark.title,
+    detail: landmark.detail,
+    optional: landmark.optional,
+  })),
+}));
+---
+
+<BaseLayout
+  title="推薦路線"
+  description="從寧姆格福經利耶尼亞、蓋利德、亞壇高原到王城羅德爾的首周目推薦順序，附等級與武器強化區間。"
+>
+  <div class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <p class="rune-title text-[11px] text-gold">第一階段</p>
+    <h1 class="rune-title mt-3 text-3xl text-gold-bright sm:text-4xl">推薦路線</h1>
+    <p class="mt-4 max-w-3xl text-lg text-parchment-muted">
+      五個區域，依首周目褪色者該遇見的順序排列。等級區間假設你會把每個區域走一遍，而不是只衝主線。失色武器的強化等級大約是普通武器的三分之一。
+    </p>
+  </div>
+
+  <ZoneSelector locale="zh-tw" />
+
+  <div class="mx-auto max-w-6xl space-y-16 px-4 pb-8 sm:px-6">
+    {
+      zones.map((zone) => {
+        const copy = zoneCopyZhTw[zone.id];
+        const flasksHere = flaskPickups.filter((pickup) => pickup.zone === zone.id);
+        return (
+          <article id={zone.id} class="scroll-mt-28">
+            <Panel class="p-6 sm:p-8">
+              <div>
+                <p class="rune-title text-[11px] text-gold" style={`color: ${zone.accent}`}>
+                  {String(zone.order).padStart(2, "0")} · {copy.epithet}
+                </p>
+                <h2 class="mt-2 font-display text-3xl text-parchment">{copy.name}</h2>
+                <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">等級</dt>
+                    <dd class="text-gold-bright">{copy.levelRange}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">普通</dt>
+                    <dd class="text-gold-bright">{copy.weaponUpgrade}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">失色</dt>
+                    <dd class="text-gold-bright">{copy.somberUpgrade}</dd>
+                  </div>
+                  <div>
+                    <dt class="rune-title text-[10px] text-parchment-faint">生命力</dt>
+                    <dd class="text-gold-bright">{copy.vigorTarget}</dd>
+                  </div>
+                </dl>
+              </div>
+              <p class="mt-6 text-parchment-muted">{zone.summary}</p>
+              <h3 class="rune-title mt-8 text-xs text-gold">怎麼走</h3>
+              <p class="mt-2 text-parchment">{zone.approach}</p>
+              <h3 class="rune-title mt-8 text-xs text-gold">碎片君王與關卡</h3>
+              <ul class="mt-3 space-y-3">
+                {zone.bosses.map((boss) => (
+                  <li class="border-l border-gold/30 pl-3">
+                    <p class="text-parchment">{boss.name}</p>
+                    <p class="text-sm text-parchment-muted">{boss.note}</p>
+                  </li>
+                ))}
+              </ul>
+              {flasksHere.length > 0 && (
+                <>
+                  <h3 class="rune-title mt-8 text-xs text-gold">此區域的聖杯瓶</h3>
+                  <ul class="mt-3 columns-1 gap-4 text-sm text-parchment-muted sm:columns-2">
+                    {flasksHere.map((pickup) => (
+                      <li class="mb-2">
+                        <a href={flasksHref} class="text-gold hover:text-gold-bright">
+                          {pickup.name}
+                        </a>
+                        <span> · {pickup.location}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {zone.warnings.length > 0 && (
+                <div class="mt-8 border border-rust/40 bg-rust/10 p-4">
+                  <p class="rune-title text-[10px] text-rust">不要</p>
+                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm text-parchment-muted">
+                    {zone.warnings.map((warning) => (
+                      <li>{warning}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </Panel>
+          </article>
+        );
+      })
+    }
+
+    <Panel class="p-6 sm:p-8">
+      <h2 class="font-display text-2xl text-parchment">要標記的地標</h2>
+      <p class="mt-2 text-parchment-muted">只存在這台瀏覽器。可選地點有標示；若首領已經教你夠多，可以先略過。</p>
+      <div class="mt-6">
+        <Checklist client:load groups={groups} locale="zh-tw" />
+      </div>
+    </Panel>
+  </div>
+</BaseLayout>

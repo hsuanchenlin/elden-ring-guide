@@ -1,0 +1,100 @@
+---
+import Panel from "../../components/Panel.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { starterBuilds } from "../../data/builds";
+import { starterBuildCopyZhTw, statCopyZhTw } from "../../data/zh-tw";
+import "@fontsource/noto-sans-tc/400.css";
+
+const statOrder = ["Vigor", "Mind", "Endurance", "Strength", "Dexterity", "Intelligence", "Faith", "Arcane"];
+---
+
+<BaseLayout
+  title="初始流派"
+  description="三套艾爾登法環初始流派：流浪騎士的力氣與強韌、武士的出血、占星家的輝石魔法。"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <p class="rune-title text-[11px] text-gold">出身</p>
+    <h1 class="rune-title mt-3 text-3xl text-gold-bright sm:text-4xl">初始流派</h1>
+    <p class="mt-4 max-w-3xl text-lg text-parchment-muted">
+      三套不用開著攻略也能撐過第一階段的原型。選一套、把生命力練起來，再讓手上已有的武器告訴你下一點該加哪項能力。
+    </p>
+
+    <div class="mt-10 space-y-10">
+      {
+        starterBuilds.map((build, index) => {
+          const copy = starterBuildCopyZhTw[build.id];
+          return (
+            <article id={build.id}>
+              <Panel class="p-6 sm:p-8">
+                <p class="rune-title text-[11px] text-gold">
+                  {String(index + 1).padStart(2, "0")} · 等級 {build.startingLevel}
+                </p>
+                <h2 class="mt-2 font-display text-3xl text-parchment">{copy.className}</h2>
+                <p class="mt-1 text-gold">{copy.archetype}</p>
+                <p class="mt-4 text-parchment-muted">{build.tagline}</p>
+
+                <h3 class="rune-title mt-8 text-xs text-gold">開場能力</h3>
+                <dl class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {statOrder.map((stat) => (
+                    <div class="border border-gold/10 bg-obsidian px-3 py-2">
+                      <dt class="rune-title text-[9px] text-parchment-faint">{statCopyZhTw[stat]}</dt>
+                      <dd class="text-lg text-gold-bright">{build.stats[stat]}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div class="mt-8 grid gap-8 md:grid-cols-2">
+                  <div>
+                    <h3 class="rune-title text-xs text-gold">初始裝備</h3>
+                    <ul class="mt-3 list-disc space-y-1 pl-4 text-parchment-muted">
+                      {build.kit.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                    <p class="mt-3 text-sm text-parchment-muted">
+                      <span class="text-parchment">遺物：</span> {build.keepsake}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 class="rune-title text-xs text-gold">升級順序</h3>
+                    <ol class="mt-3 list-decimal space-y-2 pl-4 text-parchment-muted">
+                      {build.leveling.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+
+                <h3 class="rune-title mt-8 text-xs text-gold">早期武器</h3>
+                <ul class="mt-3 space-y-2">
+                  {build.earlyWeapons.map((weapon) => (
+                    <li class="border-l border-gold/30 pl-3">
+                      <p class="text-parchment">{weapon.name}</p>
+                      <p class="text-sm text-parchment-muted">{weapon.where}</p>
+                    </li>
+                  ))}
+                </ul>
+
+                <h3 class="rune-title mt-8 text-xs text-gold">打法</h3>
+                <ul class="mt-3 list-disc space-y-2 pl-4 text-parchment-muted">
+                  {build.playstyle.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+
+                <div class="mt-8 border border-rust/40 bg-rust/10 p-4">
+                  <p class="rune-title text-[10px] text-rust">陷阱</p>
+                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm text-parchment-muted">
+                    {build.pitfalls.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Panel>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</BaseLayout>

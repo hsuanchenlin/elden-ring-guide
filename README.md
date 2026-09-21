@@ -16,7 +16,7 @@ Companion pages:
 
 - `/flasks` - Golden Seeds and Sacred Tears through Leyndell, with a persistent checklist
 - `/builds` - Vagabond strength/poise, Samurai bleed, Astrologer sorcery
-- `/zh-tw` - Traditional Chinese landing page; the route, flask, and build pages stay English until translated (see `src/lib/i18n.ts`)
+- `/zh-tw` - Traditional Chinese navigation for the landing, route, flasks, and builds (guide content is English; see `src/lib/i18n.ts`)
 
 Checklists store progress in the browser (`localStorage`). Nothing is uploaded.
 
