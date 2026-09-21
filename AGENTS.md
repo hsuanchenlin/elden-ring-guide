@@ -15,6 +15,7 @@ Never run `npx wrangler deploy` from a feature branch; `main` deploys itself thr
 - Shared chrome is `src/layouts/BaseLayout.astro` plus `src/components/`.
 - Design tokens (Erdtree gold, obsidian, parchment) are `@theme` entries in `src/styles/global.css`.
 - Checklist persistence is `src/lib/checklist.ts`, stored under `tarnished-codex:v1` in `localStorage`. Tests should inject `memoryStorage()` rather than touching a browser.
+- Locale paths live in `src/lib/i18n.ts`; it also lists which routes have a `/zh-tw/` page. zh-TW names for zones and builds live in `src/data/zh-tw.ts`.
 
 ## Conventions
 

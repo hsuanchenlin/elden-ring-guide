@@ -2,33 +2,23 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.svelte";
 import "../styles/global.css";
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { isPublished, locales, pathFor, routeOf, type Locale } from "../lib/i18n";
 
 interface Props {
   title: string;
   description?: string;
-  /** Optional override for locale-specific metadata; defaults to Astro.currentLocale */
-  locale?: string;
 }
 
-const currentLocale = Astro.currentLocale || "en";
 const {
   title,
-  description = currentLocale === "zh-tw"
-    ? "艾爾登法環 推薦路線：從寧姆格拉夫到羅德爾王城，包含聖杯升級與初始 builds。"
-    : "A recommended Elden Ring progression route through Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell, with flask upgrades and starter builds.",
-  locale = currentLocale,
+  description = "A recommended Elden Ring progression route through Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell, with flask upgrades and starter builds.",
 } = Astro.props;
 const pageTitle = title.includes("Tarnished Codex") ? title : `${title} · Tarnished Codex`;
 
-const otherLocale = locale === "zh-tw" ? "en" : "zh-tw";
-// Build alternate URL by stripping any existing locale prefix from pathname
-let pathForOther = Astro.url.pathname;
-if (pathForOther.startsWith("/zh-tw")) {
-  pathForOther = pathForOther.replace("/zh-tw", "") || "/";
-}
-const alternateHref = getRelativeLocaleUrl(otherLocale, pathForOther);
-const canonicalHref = getRelativeLocaleUrl(locale, pathForOther);
+const locale: Locale = Astro.currentLocale === "zh-tw" ? "zh-tw" : "en";
+const route = routeOf(Astro.url.pathname);
+const absoluteUrl = (path: string) => new URL(path, Astro.site).href;
+const alternates = locales.filter((candidate) => isPublished(candidate, route));
 ---
 
 <!doctype html>
@@ -42,17 +32,18 @@ const canonicalHref = getRelativeLocaleUrl(locale, pathForOther);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={locale === "zh-tw" ? "zh_TW" : "en_US"} />
-    <link rel="canonical" href={canonicalHref} />
-    <link rel="alternate" hreflang="en" href={getRelativeLocaleUrl("en", pathForOther)} />
-    <link rel="alternate" hreflang="zh-tw" href={getRelativeLocaleUrl("zh-tw", pathForOther)} />
-    <link rel="alternate" hreflang="x-default" href={getRelativeLocaleUrl("en", pathForOther)} />
+    <link rel="canonical" href={absoluteUrl(pathFor(locale, route))} />
+    {
+      alternates.length > 1 && (
+        <>
+          {alternates.map((alternate) => (
+            <link rel="alternate" hreflang={alternate} href={absoluteUrl(pathFor(alternate, route))} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={absoluteUrl(pathFor("en", route))} />
+        </>
+      )
+    }
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    {locale === "zh-tw" && (
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
-      />
-    )}
     <title>{pageTitle}</title>
   </head>
   <body class="grain antialiased">
@@ -60,12 +51,12 @@ const canonicalHref = getRelativeLocaleUrl(locale, pathForOther);
       href="#content"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-obsidian-panel focus:px-3 focus:py-2 focus:text-gold"
     >
-      Skip to content
+      {locale === "zh-tw" ? "跳至內容" : "Skip to content"}
     </a>
     <Header client:load currentPath={Astro.url.pathname} currentLocale={locale} />
     <main id="content">
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

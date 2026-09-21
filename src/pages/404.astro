@@ -1,27 +1,17 @@
 ---
 import ErdtreeMark from "../components/ErdtreeMark.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const locale = Astro.currentLocale || "en";
-const isZh = locale === "zh-tw";
-const localePrefix = isZh ? "/zh-tw" : "";
 ---
 
-<BaseLayout
-  title={isZh ? "失落恩惠" : "Lost grace"}
-  description={isZh ? "此路不在地圖上。" : "This path is not on the map."}
-  locale={locale}
->
+<BaseLayout title="Lost grace" description="This path is not on the map.">
   <div class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center px-4 py-24 text-center">
     <ErdtreeMark class="h-16 w-16" />
-    <h1 class="rune-title mt-6 text-3xl text-gold-bright">{isZh ? "失落恩惠未找到" : "Site of grace not found"}</h1>
+    <h1 class="rune-title mt-6 text-3xl text-gold-bright">Site of grace not found</h1>
     <p class="mt-4 text-parchment-muted">
-      {isZh
-        ? "此路不在地圖上。返回法典，或沿著寧姆格拉夫的推薦路線前進。"
-        : "This path is not on the map. Return to the Codex, or take the recommended route through Limgrave."}
+      This path is not on the map. Return to the Codex, or take the recommended route through Limgrave.
     </p>
-    <a href={`${localePrefix}/`} class="rune-title mt-8 border border-gold/40 px-4 py-2 text-xs text-gold hover:text-gold-bright">
-      {isZh ? "返回法典" : "Return to the Codex"}
+    <a href="/" class="rune-title mt-8 border border-gold/40 px-4 py-2 text-xs text-gold hover:text-gold-bright">
+      Return to the Codex
     </a>
   </div>
 </BaseLayout>

@@ -1,43 +1,31 @@
 import type { ChallengeVideo } from "./types";
 
 /**
- * Curated static catalogue of Elden Ring challenge videos.
- * Populated only with real, embeddable YouTube videos independently verified via direct HTTP checks.
- * This is a hand-curated starting set for Phase 1; automation (YouTube Data API, scheduled refresh)
- * is explicitly out of scope until a later authorized phase.
- * Categories focus on the approved constraints: weapon-only, no-HP-leveling, no-item runs.
+ * Curated static catalogue of Elden Ring challenge runs, one per constraint the guide tracks.
+ * Each entry was checked against YouTube's oEmbed endpoint on 2026-09-21 (a 200 means the video
+ * exists and allows embedding); repeat that check when adding or replacing an entry. Discovery
+ * stays hand-curated in Phase 1: no API, scheduled refresh, or credentials.
  */
 export const challengeVideos: ChallengeVideo[] = [
   {
-    youtubeId: "AKXiKB_8JLI",
-    title: "Elden Ring Official Launch Trailer",
-    category: "other",
-    runner: "Bandai Namco Entertainment",
-    published: "2022-02-25",
-    note: "Official trailer - click-to-load privacy-enhanced embed (youtube-nocookie)",
-  },
-  {
-    youtubeId: "8j9vL2pQ5kM",
-    title: "Elden Ring Level 1 Run (No Leveling)",
-    category: "no-hp-leveling",
-    runner: "Distortion2",
-    published: "2022-03-12",
-    note: "Verified embeddable level-1 / no-HP-leveling challenge run",
-  },
-  {
-    youtubeId: "5bZkp7q19f0",
-    title: "Elden Ring Weapon-Only Challenge",
+    youtubeId: "F8FFnoluvF0",
+    title: "Smithscript Dagger Only Run | Elden Ring Tarnished Update",
     category: "weapon-only",
-    runner: "LilAggy",
-    published: "2022-04-05",
-    note: "Verified embeddable weapon-only run (starting armament focus)",
+    runner: "Youwy",
+    published: "2026-09-05",
   },
   {
-    youtubeId: "L2pQ5kM8j9v",
-    title: "Elden Ring No Items / No Flask Run",
+    youtubeId: "CnDI68CUE7o",
+    title: "Level 1, No upgrades, Hitless challenge run of Elden Ring with a side of Judgement",
+    category: "no-hp-leveling",
+    runner: "Lamenter's Gaol",
+    published: "2026-05-04",
+  },
+  {
+    youtubeId: "3DOT2_2AMFc",
+    title: "The IMPOSSIBLE Elden Ring run BARE FISTS NO weapons NO talismans NO heals NO armor NO items, ETC.",
     category: "no-item",
-    runner: "The Backlogs",
-    published: "2022-05-20",
-    note: "Verified embeddable no-item (no consumables, no flask upgrades) challenge",
+    runner: "Skumnut",
+    published: "2026-04-02",
   },
 ];

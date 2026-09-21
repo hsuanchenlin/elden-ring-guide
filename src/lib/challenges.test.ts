@@ -1,32 +1,38 @@
 import { describe, expect, it } from "vitest";
 import { challengeVideos } from "../data/challenges";
+import { officialTrailer } from "../data/media";
 import type { ChallengeCategory } from "../data/types";
 
-describe("challenge video catalogue shape", () => {
-  it("exports a non-empty array of videos", () => {
-    expect(Array.isArray(challengeVideos)).toBe(true);
+const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+describe("published video catalogues", () => {
+  it("gives every challenge entry a well-formed YouTube id, attribution, and date", () => {
     expect(challengeVideos.length).toBeGreaterThan(0);
+    for (const video of challengeVideos) {
+      expect(video.youtubeId, video.title).toMatch(YOUTUBE_ID);
+      expect(video.title.trim()).not.toBe("");
+      expect(video.runner.trim()).not.toBe("");
+      expect(video.published, video.title).toMatch(ISO_DATE);
+    }
   });
 
-  it("every entry has required fields and valid category", () => {
-    const validCategories: ChallengeCategory[] = ["weapon-only", "no-hp-leveling", "no-item", "other"];
-    challengeVideos.forEach((v, idx) => {
-      expect(v, `video at index ${idx}`).toHaveProperty("youtubeId");
-      expect(typeof v.youtubeId).toBe("string");
-      expect(v.youtubeId.length).toBeGreaterThan(5);
-      expect(v).toHaveProperty("title");
-      expect(v).toHaveProperty("category");
-      expect(validCategories).toContain(v.category);
-      expect(v).toHaveProperty("runner");
-      expect(v).toHaveProperty("published");
-      // published looks like YYYY-MM-DD or YYYY-MM
-      expect(/^\d{4}-\d{2}/.test(v.published)).toBe(true);
-    });
+  it("uses each YouTube id only once across the trailer and the challenge runs", () => {
+    const ids = [officialTrailer.youtubeId, ...challengeVideos.map((video) => video.youtubeId)];
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("includes at least one official trailer and one of each approved constraint category", () => {
-    const cats = new Set(challengeVideos.map((v) => v.category));
-    expect(cats.has("other")).toBe(true); // official
-    expect(cats.has("weapon-only") || cats.has("no-hp-leveling") || cats.has("no-item")).toBe(true);
+  it("covers weapon-only, no-HP-leveling, and no-item runs", () => {
+    const categories = new Set(challengeVideos.map((video) => video.category));
+    const required: ChallengeCategory[] = ["weapon-only", "no-hp-leveling", "no-item"];
+    for (const category of required) {
+      expect(categories.has(category), category).toBe(true);
+    }
+  });
+
+  it("embeds the official trailer from the publisher", () => {
+    expect(officialTrailer.youtubeId).toMatch(YOUTUBE_ID);
+    expect(officialTrailer.publisher).toMatch(/Bandai Namco/);
+    expect(officialTrailer.published).toMatch(ISO_DATE);
   });
 });

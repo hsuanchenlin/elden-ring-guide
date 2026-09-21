@@ -54,30 +54,14 @@ export interface StarterBuild {
   pitfalls: string[];
 }
 
-export interface TrailerMedia {
-  id: string;
+export interface Trailer {
   youtubeId: string;
   title: string;
-  source: string;
+  publisher: string;
   published: string;
-  policy: string;
 }
 
-export interface ScreenshotMedia {
-  id: string;
-  src: string;
-  captureDate: string;
-  policy: string;
-  note?: string;
-}
-
-export interface MediaManifest {
-  policy: string;
-  trailers: TrailerMedia[];
-  screenshots: ScreenshotMedia[];
-}
-
-export type ChallengeCategory = "weapon-only" | "no-hp-leveling" | "no-item" | "other";
+export type ChallengeCategory = "weapon-only" | "no-hp-leveling" | "no-item";
 
 export interface ChallengeVideo {
   youtubeId: string;
@@ -85,5 +69,4 @@ export interface ChallengeVideo {
   category: ChallengeCategory;
   runner: string;
   published: string;
-  note?: string;
 }

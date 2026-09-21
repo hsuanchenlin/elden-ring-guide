@@ -16,6 +16,7 @@ Companion pages:
 
 - `/flasks` - Golden Seeds and Sacred Tears through Leyndell, with a persistent checklist
 - `/builds` - Vagabond strength/poise, Samurai bleed, Astrologer sorcery
+- `/zh-tw` - Traditional Chinese landing page; the route, flask, and build pages stay English until translated (see `src/lib/i18n.ts`)
 
 Checklists store progress in the browser (`localStorage`). Nothing is uploaded.
 
@@ -40,4 +41,4 @@ Every push to `main` runs `.github/workflows/deploy.yml`, which publishes `dist/
 - Astro for static pages
 - Tailwind CSS v4 for the dark-fantasy design tokens
 - Svelte 5 for the checklist and navigation islands
-- Vitest for checklist persistence and flask-charge tests
+- Vitest for checklist persistence, flask-charge, locale-path, and video catalogue tests
