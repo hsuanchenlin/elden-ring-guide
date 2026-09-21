@@ -1,7 +1,9 @@
 ---
+import ItemMapFigure from "../../components/ItemMapFigure.astro";
 import Panel from "../../components/Panel.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { starterBuilds } from "../../data/builds";
+import { acquisitionFor, earlyWeaponIdFor } from "../../data/item-maps";
 import { starterBuildCopyZhTw, statCopyZhTw } from "../../data/zh-tw";
 import "@fontsource/noto-sans-tc/400.css";
 
@@ -66,13 +68,18 @@ const statOrder = ["Vigor", "Mind", "Endurance", "Strength", "Dexterity", "Intel
                 </div>
 
                 <h3 class="rune-title mt-8 text-xs text-gold">早期武器</h3>
-                <ul class="mt-3 space-y-2">
-                  {build.earlyWeapons.map((weapon) => (
-                    <li class="border-l border-gold/30 pl-3">
-                      <p class="text-parchment">{weapon.name}</p>
-                      <p class="text-sm text-parchment-muted">{weapon.where}</p>
-                    </li>
-                  ))}
+                <ul class="mt-3 space-y-6">
+                  {build.earlyWeapons.map((weapon) => {
+                    const item = acquisitionFor(earlyWeaponIdFor(weapon.name));
+                    return (
+                      <li id={item.id} class="scroll-mt-28 border-l border-gold/30 pl-3">
+                        <p class="text-parchment">{item.nameZhTw}</p>
+                        <p class="text-sm text-parchment-muted">{item.locationZhTw}</p>
+                        <p class="mt-2 text-sm text-parchment-muted">{item.howToGetZhTw}</p>
+                        <ItemMapFigure item={item} />
+                      </li>
+                    );
+                  })}
                 </ul>
 
                 <h3 class="rune-title mt-8 text-xs text-gold">打法</h3>

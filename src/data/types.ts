@@ -39,6 +39,28 @@ export interface FlaskPickup {
   quantity?: number;
 }
 
+/** Approximate pin on a zone schematic. Percentages are from the west/north edges. */
+export interface ItemMapPin {
+  zone: ZoneId;
+  x: number;
+  y: number;
+  certainty: "confirmed" | "approximate";
+}
+
+/**
+ * Traditional Chinese acquisition copy and map-placeholder metadata for a catalogue item.
+ * Visuals use a blank labeled placeholder until the captain supplies a screenshot.
+ */
+export interface ItemAcquisition {
+  id: string;
+  nameZhTw: string;
+  locationZhTw: string;
+  howToGetZhTw: string;
+  /** Overworld or dungeon pin. Omitted when the item has no single field position. */
+  pin?: ItemMapPin;
+  alt: string;
+}
+
 export interface StarterBuild {
   id: string;
   className: string;

@@ -3,6 +3,7 @@ import Checklist from "../../components/Checklist.svelte";
 import Panel from "../../components/Panel.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { flaskPickups, pickupQuantity, pickupsByKind, seedThresholds, totalQuantity } from "../../data/flasks";
+import { acquisitionFor, mapFigure } from "../../data/item-maps";
 import { zoneCopyZhTw } from "../../data/zh-tw";
 import { zones } from "../../data/zones";
 import "@fontsource/noto-sans-tc/400.css";
@@ -12,35 +13,36 @@ const tears = pickupsByKind("sacred-tear");
 const zoneName = Object.fromEntries(zones.map((zone) => [zone.id, zoneCopyZhTw[zone.id].name]));
 
 function pickupMeta(pickup: (typeof flaskPickups)[number]): string {
-  const parts = [zoneName[pickup.zone], pickup.location];
+  const copy = acquisitionFor(pickup.id);
+  const parts = [zoneName[pickup.zone], copy.locationZhTw];
   const quantity = pickupQuantity(pickup);
   if (quantity > 1) parts.push(`${quantity} ${pickup.kind === "golden-seed" ? "種子" : "露滴"}`);
   return parts.join(" · ");
 }
 
+function pickupItem(pickup: (typeof flaskPickups)[number], optional: boolean) {
+  const copy = acquisitionFor(pickup.id);
+  return {
+    id: pickup.id,
+    title: copy.nameZhTw,
+    detail: copy.howToGetZhTw,
+    optional,
+    meta: pickupMeta(pickup),
+    map: mapFigure(copy),
+  };
+}
+
 const seedGroups = [
   {
     heading: "",
-    items: seeds.map((pickup) => ({
-      id: pickup.id,
-      title: pickup.name,
-      detail: pickup.detail,
-      optional: pickup.priority === "detour" || pickup.id === "seed-keepsake",
-      meta: pickupMeta(pickup),
-    })),
+    items: seeds.map((pickup) => pickupItem(pickup, pickup.priority === "detour" || pickup.id === "seed-keepsake")),
   },
 ];
 
 const tearGroups = [
   {
     heading: "",
-    items: tears.map((pickup) => ({
-      id: pickup.id,
-      title: pickup.name,
-      detail: pickup.detail,
-      optional: pickup.priority === "detour",
-      meta: pickupMeta(pickup),
-    })),
+    items: tears.map((pickup) => pickupItem(pickup, pickup.priority === "detour")),
   },
 ];
 ---
@@ -53,7 +55,7 @@ const tearGroups = [
     <p class="rune-title text-[11px] text-gold">生存清單</p>
     <h1 class="rune-title mt-3 text-3xl text-gold-bright sm:text-4xl">聖杯瓶升級</h1>
     <p class="mt-4 max-w-3xl text-lg text-parchment-muted">
-      聖杯露滴提高每一口的回復量，黃金種子提高可喝的次數。第一階段列出雪山之前的每一滴露滴，以及不用離開寧姆格福到王城羅德爾這條路就能拿到的種子。
+      聖杯露滴提高每一口的回復量，黃金種子提高可喝的次數。第一階段列出雪山之前的每一滴露滴，以及不用離開寧姆格福到王城羅德爾這條路就能拿到的種子。每筆附取得方式與示意位置；地圖畫面先放標示清楚的空白圖，之後再換上實景。
     </p>
 
     <div class="mt-10 grid gap-4 md:grid-cols-3">
