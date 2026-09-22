@@ -15,13 +15,13 @@ Never run `npx wrangler deploy` from a feature branch; `main` deploys itself thr
 - Shared chrome is `src/layouts/BaseLayout.astro` plus `src/components/`.
 - Design tokens (Erdtree gold, obsidian, parchment) are `@theme` entries in `src/styles/global.css`.
 - Checklist persistence is `src/lib/checklist.ts`, stored under `tarnished-codex:v1` in `localStorage`. Tests should inject `memoryStorage()` rather than touching a browser.
-- Locale paths live in `src/lib/i18n.ts`; it also lists which routes have a `/zh-tw/` page. zh-TW names for zones and builds live in `src/data/zh-tw.ts`.
+- Locale paths live in `src/lib/i18n.ts`; it also lists which routes have a `/zh-tw/` page. zh-TW names for zones and builds live in `src/data/zh-tw.ts`. Item acquisition copy and map placeholders live in `src/data/item-maps.ts`.
 
 ## Conventions
 
 - Keep Phase 1 scoped to Limgrave, Liurnia, Caelid, Altus Plateau, and Leyndell unless the captain expands the route.
 - Prefer Svelte islands only where the page must remember state or toggle UI (checklist, mobile nav). The rest stays static Astro.
-- Do not add tests that only grep source files for copy. Assert flask math, storage behavior, or the published catalogues.
+- Do not add tests that only grep source files for copy. Assert flask math, storage behavior, or the published catalogues (including item-map placeholders).
 
 ## Maintaining this file
 

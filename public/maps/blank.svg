@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-hidden="true">
+  <rect width="800" height="450" fill="#141210"/>
+  <rect x="24" y="24" width="752" height="402" fill="none" stroke="#c9a227" stroke-opacity="0.4" stroke-width="2"/>
+  <text x="400" y="208" text-anchor="middle" fill="#e8d48b" font-size="28" font-family="'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif">地圖待補</text>
+  <text x="400" y="246" text-anchor="middle" fill="#8d8574" font-size="16" font-family="Georgia, serif">Map image pending</text>
+</svg>

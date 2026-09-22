@@ -16,7 +16,7 @@ Companion pages:
 
 - `/flasks` - Golden Seeds and Sacred Tears through Leyndell, with a persistent checklist
 - `/builds` - Vagabond strength/poise, Samurai bleed, Astrologer sorcery
-- `/zh-tw` - Traditional Chinese navigation for the landing, route, flasks, and builds (guide content is English; see `src/lib/i18n.ts`)
+- `/zh-tw` - Traditional Chinese landing, route, flasks, and builds (`src/lib/i18n.ts`). Flask pickups and starter-build early weapons on the Chinese pages include acquisition notes plus a labeled blank map at `public/maps/blank.svg`; replace that file, or change an item's `src` in `src/data/item-maps.ts`, when a screenshot is ready.
 
 Checklists store progress in the browser (`localStorage`). Nothing is uploaded.
 

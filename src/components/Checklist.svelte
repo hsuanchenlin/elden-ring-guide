@@ -9,12 +9,22 @@
   } from "../lib/checklist";
   import type { Locale } from "../lib/i18n";
 
+  export type ChecklistMap = {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    pin?: { x: number; y: number; label: string };
+    caption: string;
+  };
+
   export type ChecklistItem = {
     id: string;
     title: string;
     detail: string;
     optional?: boolean;
     meta?: string;
+    map?: ChecklistMap;
   };
 
   export type ChecklistGroup = {
@@ -105,7 +115,7 @@
       {/if}
       <ul class="divide-y divide-gold/10 border border-gold/15">
         {#each group.items as item}
-          <li>
+          <li id={item.id} class="scroll-mt-28">
             <label class="flex cursor-pointer gap-3 px-3 py-3 hover:bg-obsidian-raised/70">
               <input
                 type="checkbox"
@@ -126,6 +136,32 @@
                 <span class="mt-1 block text-sm text-parchment-muted">{item.detail}</span>
               </span>
             </label>
+            {#if item.map}
+              <figure class="max-w-xl px-3 pb-3 pl-10">
+                <div class="relative overflow-hidden border border-gold/20 bg-obsidian">
+                  <img
+                    src={item.map.src}
+                    width={item.map.width}
+                    height={item.map.height}
+                    alt={item.map.alt}
+                    class="block aspect-[16/9] h-auto w-full object-cover"
+                  />
+                  {#if item.map.pin}
+                    <span
+                      class="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-obsidian bg-gold shadow-[0_0_0_3px_rgb(201_162_39_/_0.35)]"
+                      style="left: {item.map.pin.x}%; top: {item.map.pin.y}%"
+                    >
+                      <span class="sr-only">{item.map.pin.label}示意位置</span>
+                    </span>
+                    <span class="pointer-events-none absolute left-1/2 top-2 -translate-x-1/2 text-[10px] text-gold/80">北</span>
+                    <span class="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-gold/80">南</span>
+                    <span class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-gold/80">西</span>
+                    <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gold/80">東</span>
+                  {/if}
+                </div>
+                <figcaption class="mt-2 text-xs text-parchment-faint">{item.map.caption}</figcaption>
+              </figure>
+            {/if}
           </li>
         {/each}
       </ul>

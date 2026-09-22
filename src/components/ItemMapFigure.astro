@@ -1,0 +1,40 @@
+---
+import type { ItemAcquisition } from "../data/types";
+import { mapFigure } from "../data/item-maps";
+
+interface Props {
+  item: ItemAcquisition;
+}
+
+const { item } = Astro.props;
+const figure = mapFigure(item);
+---
+
+<figure class="mt-3">
+  <div class="relative overflow-hidden border border-gold/20 bg-obsidian">
+    <img
+      src={figure.src}
+      width={figure.width}
+      height={figure.height}
+      alt={figure.alt}
+      class="block aspect-[16/9] h-auto w-full object-cover"
+    />
+    {
+      figure.pin && (
+        <>
+          <span
+            class="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-obsidian bg-gold shadow-[0_0_0_3px_rgb(201_162_39_/_0.35)]"
+            style={`left: ${figure.pin.x}%; top: ${figure.pin.y}%`}
+          >
+            <span class="sr-only">{figure.pin.label}示意位置</span>
+          </span>
+          <span class="pointer-events-none absolute left-1/2 top-2 -translate-x-1/2 text-[10px] text-gold/80">北</span>
+          <span class="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-gold/80">南</span>
+          <span class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-gold/80">西</span>
+          <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gold/80">東</span>
+        </>
+      )
+    }
+  </div>
+  <figcaption class="mt-2 text-xs text-parchment-faint">{figure.caption}</figcaption>
+</figure>
